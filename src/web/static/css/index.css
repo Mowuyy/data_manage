@@ -1,0 +1,11 @@
+body {
+    background: #cccccc;
+}
+.index {
+    position: absolute;
+    text-align: center;
+    top: 40%;
+    width:100%;
+    height: 100%;
+    font-family: sans-serif;
+}
