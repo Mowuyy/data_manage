@@ -2,9 +2,9 @@
 
 from flask import render_template
 
-from . import order_mgr
+from . import app
 
 
-@order_mgr.route("order_import")
+@app.route("/")
 def order_mgr():
-    return render_template("order_import.html")
+    return render_template("order_upload.html")

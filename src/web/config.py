@@ -1,17 +1,14 @@
 # -*- coding: utf-8 -*-
 
-import os
+import sqlite3
 import logging
 
 import flask
+from flask import current_app
 
 
 class Config:
     SECRET_KEY = 's@d343$##f8Ks!@ND0ar1@!dkk02fAF'
-
-    # 自动commit提交到数据库
-    SQLALCHEMY_COMMIT_ON_TEARDOWN = True
-    SQLALCHEMY_TRACK_MODIFICATIONS = True
 
     # 配置日志
     LOG_LEVEL = logging.INFO
@@ -37,14 +34,25 @@ class Config:
                 handler.setFormatter(app.config['LOG_FORMATTER'])
                 app.logger.addHandler(handler)
 
+    @staticmethod
+    def init_db(app:flask.Flask, db_url):
+        app.db = sqlite3.connect(db_url, check_same_thread=False)
+        print("----------- start db -----------")
+
+        @app.teardown_appcontext
+        def shutdown_session(response_or_exc):
+            db = current_app.db
+            if db is not None:
+                print("----------- close db -----------")
+                db.close()
+            return response_or_exc
+
 
 class DevelopmentConfig(Config):
     """开发模式"""
     DEBUG = True
 
-    # 连接 mysql URl 设置
-    # SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
-    #                           'mysql://127.0.0.1:3306/order_manage?user=order_manage&password=order_manage$,.123'
+    DB_URL = "./db/data_mgr.db"
 
     #日志配置
     LOG_LEVEL = logging.DEBUG
@@ -55,9 +63,7 @@ class ProductionConfig(Config):
     """生产模式"""
     DEBUG = False
 
-    # 连接 mysql URl 设置
-    # SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
-    #                           'mysql://127.0.0.1:3306/order_manage?user=order_manage&password=order_manage$,.123'
+    DB_URL = "./db/data_mgr.db"
 
     # 日志配置
     LOG_FILE_PATH = '/var/log/data_manage/web/web.log'

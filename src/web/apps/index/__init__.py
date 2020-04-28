@@ -3,6 +3,6 @@
 from flask import Blueprint
 
 
-index = Blueprint('index', __name__, static_folder='../../static', template_folder='../../templates')
+app = Blueprint('index', __name__, static_folder='../../static', template_folder='../../templates')
 
 from . import views

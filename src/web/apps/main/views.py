@@ -2,10 +2,10 @@
 
 from flask import render_template
 
-from . import main
+from . import app
 
 
-@main.route('/')
-@main.route('/index')
+@app.route('/')
+@app.route('/index')
 def index():
     return render_template("index.html")

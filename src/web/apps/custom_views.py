@@ -1,26 +1,25 @@
 # -*- coding: utf-8 -*-
-
 from werkzeug.wrappers.response import Response
 from flask.views import View
-import voluptuous
+# # import voluptuous
 from flask.globals import request
 import json, datetime, uuid, decimal
 from types import GeneratorType
 from . import code_msg
-from flask_login import current_user
+# from flask_login import current_user
 from flask import current_app, abort
-
-
-def check_login():
-    if request.method == 'OPTIONS':
-        return True
-    elif current_app.login_manager._login_disabled:
-        return True
-    elif not current_user.is_authenticated:
-        return False
-        # return current_app.login_manager.unauthorized()
-    return True
-
+#
+#
+# def check_login():
+#     if request.method == 'OPTIONS':
+#         return True
+#     elif current_app.login_manager._login_disabled:
+#         return True
+#     elif not current_user.is_authenticated:
+#         return False
+#         # return current_app.login_manager.unauthorized()
+#     return True
+#
 class PageInfo(object):
 
     def __init__(self, page, page_sz, total=0):
@@ -31,47 +30,47 @@ class PageInfo(object):
         self.limit_clause = ' LIMIT %s OFFSET %s' % (page_sz, self.offset)
 
 
-class Schema(voluptuous.Schema):
-    def __init__(self, *args, extra=voluptuous.REMOVE_EXTRA, **kwargs):
-        super(Schema, self).__init__(*args, extra=extra, **kwargs)
-
-
+# # class Schema(voluptuous.Schema):
+# #     def __init__(self, *args, extra=voluptuous.REMOVE_EXTRA, **kwargs):
+# #         super(Schema, self).__init__(*args, extra=extra, **kwargs)
+#
+#
 class CustomView(View):
-
-    _schema:voluptuous.Schema = None
+#
+#     _schema:voluptuous.Schema = None
     auto_process_page = True
-    _perms = None
-    _load_perms = True
-    _login_required = True
-    _need_module = None
-
-    def _check_perm(self):
-        if not self._perms:
-            return True
-        return current_user.can(self._perms, self._load_perms)
-
-    def _check_module_open(self):
-        if not self._need_module:
-            return True
-        return current_user.is_module_open(self._need_module)
-
-    def _check_login(self):
-        if self._login_required and not check_login():
-            return False
-        return True
-
-    def _check_can_access(self):
-        if not self._check_login():
-            current_app.logger.warn('url="%s", login required', request.url)
-            return self._on_login_check_failed()
-        if not self._check_perm():
-            current_app.logger.warn('url="%s", permission denied', request.url)
-            return self._on_403()
-        if not self._check_module_open():
-            current_app.logger.warn('url="%s", module not open', request.url)
-            return self._on_module_not_open()
-        return None
-
+#     _perms = None
+#     _load_perms = True
+#     _login_required = True
+#     _need_module = None
+#
+#     def _check_perm(self):
+#         if not self._perms:
+#             return True
+#         return current_user.can(self._perms, self._load_perms)
+#
+#     def _check_module_open(self):
+#         if not self._need_module:
+#             return True
+#         return current_user.is_module_open(self._need_module)
+#
+#     def _check_login(self):
+#         if self._login_required and not check_login():
+#             return False
+#         return True
+#
+#     def _check_can_access(self):
+#         if not self._check_login():
+#             current_app.logger.warn('url="%s", login required', request.url)
+#             return self._on_login_check_failed()
+#         if not self._check_perm():
+#             current_app.logger.warn('url="%s", permission denied', request.url)
+#             return self._on_403()
+#         if not self._check_module_open():
+#             current_app.logger.warn('url="%s", module not open', request.url)
+#             return self._on_module_not_open()
+#         return None
+#
     def dispatch_request(self, *args, **kwargs):
         method = getattr(self, request.method.lower(), None)
         if method is None and request.method == 'HEAD':
@@ -79,53 +78,44 @@ class CustomView(View):
         if method is None:
             current_app.logger.warn('url="%s", method="%s"', request.url, method)
             return self._on_405()
-        rtn = self._check_can_access()
-        if rtn:
-            return rtn
-        auto_process_page = False
         all_req_args = None
-        if self._schema:
-            try:
-                all_req_args = request.args.to_dict()
-                if request.json:
-                    all_req_args.update(request.json)
-                if request.values:
-                    all_req_args.update(request.values)
-                req_args = self._schema(all_req_args)
-                if self.auto_process_page and "page" in req_args:
-                    page_sz = req_args.pop('page_size')
-                    if not 1 <= page_sz <= current_app.config['MAX_PAGE_SIZE']:
-                        current_app.logger.warn('url="%s", page size over max', request.url)
-                        return self._on_argument_invalid(ValueError('invalid page size'))
-                    page = req_args.pop('page')
-                    request.page_info = PageInfo(page, page_sz)
-                    auto_process_page = True
-                request.req_args = req_args
-            except voluptuous.MultipleInvalid as e:
-                current_app.logger.warn('request invalid, url="%s", args="%s", exc="%s"', request.url, all_req_args, e)
-                return self._on_argument_invalid(e)
+        auto_process_page = False
+#         if self._schema:
+        try:
+            all_req_args = request.args.to_dict()
+            if request.json:
+                all_req_args.update(request.json)
+            if request.values:
+                all_req_args.update(request.values)
+            # req_args = self._schema(all_req_args)
+            req_args = all_req_args
+            if self.auto_process_page and "page" in req_args:
+                page_sz = req_args.pop('page_size')
+                if not 1 <= page_sz <= current_app.config['MAX_PAGE_SIZE']:
+                    current_app.logger.warn('url="%s", page size over max', request.url)
+                    return self._on_argument_invalid(ValueError('invalid page size'))
+                page = req_args.pop('page')
+                request.page_info = PageInfo(page, page_sz)
+                auto_process_page = True
+            request.req_args = req_args
+        # except voluptuous.MultipleInvalid as e:
+        except Exception as e:
+            current_app.logger.warn('request invalid, url="%s", args="%s", exc="%s"', request.url, all_req_args, e)
+            return self._on_argument_invalid(e)
         try:
             self.pre_check(request)
             return self._packet_response(method(request, *args, **kwargs), (request.page_info if auto_process_page else None))
         except Exception as e:
             return self._on_exception(e)
-
+#
     def _packet_response(self, rtn, page_info:PageInfo):
         return rtn
-
+#
     def _on_argument_invalid(self, e):
         return Response('<h1>Invalid Request</h1>', content_type='text/html')
-
+#
     def _on_405(self):
         return Response('<h1>Method Not Allowed!!!</h1', content_type='text/html')
-
-    def _on_403(self):
-        # return Response('<h1>Forbidden, PERMISSION DENIED!!!</h1', content_type='text/html')
-        abort(403)
-
-    def _on_module_not_open(self):
-        abort(403)
-
     def _on_exception(self, e):
         raise
 
@@ -177,9 +167,6 @@ class APIView(CustomView):
 
     def _on_403(self):
         return APIResponse(code=code_msg.CODE_PERMISSION_DENIED)
-
-    def _on_module_not_open(self):
-        return APIResponse(code=code_msg.CODE_MODULE_NOT_OPEN)
 
     def _packet_response(self, rtn, page_info):
         if isinstance(rtn, Response):

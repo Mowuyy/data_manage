@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from . import order_mgr as route
+from . import app
+from .api import OrderUpload
 
 
-# route.add_url_rule('/order_import', view_func=DetailView.as_view('detail'), methods=('GET',))
+app.add_url_rule("/order_upload", view_func=OrderUpload.as_view("order_upload"), methods=("POST", ))
