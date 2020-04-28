@@ -35,15 +35,13 @@ class Config:
                 app.logger.addHandler(handler)
 
     @staticmethod
-    def init_db(app:flask.Flask, db_url):
+    def init_db(app: flask.Flask, db_url):
         app.db = sqlite3.connect(db_url, check_same_thread=False)
-        print("----------- start db -----------")
 
         @app.teardown_appcontext
         def shutdown_session(response_or_exc):
             db = current_app.db
             if db is not None:
-                print("----------- close db -----------")
                 db.close()
             return response_or_exc
 

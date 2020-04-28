@@ -4,11 +4,10 @@ from flask import Flask
 from flask_cors import *
 
 from config import config
-from utils.db_utils import SQLAlchemy
 
 
 """初始化各组件"""
-db = SQLAlchemy(engine_options={"pool_recycle": 300, 'echo': False})
+
 
 def create_app(config_name):
     app = Flask(__name__, static_url_path='/static', static_folder='../static')

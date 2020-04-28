@@ -6,6 +6,7 @@
 </head>
 <body>
 
+<h2>订单入库</h2>
 <form action="/order_mgr/order_upload" method="post">
     <p><label>收件人: </label><input type="text" name="receiver"></p>
     <p><label>订单状态: </label>
@@ -18,15 +19,15 @@
     </p>
     <p><label>订单编号: </label><input type="text" name="order_number"></p>
     <p><label>申请时间: </label><input type="text" name="apply_time"></p>
-    <p><label>旺旺名称: </label><input type="text" name="wangwang"></p>
+    <p><label>旺旺名称: </label><input type="text" name="wangwang_number"></p>
     <p><label>产品型号: </label><input type="text" name="goods_number"></p>
-    <p><label>寄件物流单号: </label><input type="text" name="mail_physical_distribution_number"></p>
-    <p><label>退货物流公司: </label><input type="text" name="return_physical_company"></p>
-    <p><label>退货物流单号: </label><input type="text" name="return_physical_distribution_number"></p>
+    <p><label>寄件物流单号: </label><input type="text" name="mail_pd_number"></p>
+    <p><label>退货物流公司: </label><input type="text" name="return_pd_company"></p>
+    <p><label>退货物流单号: </label><input type="text" name="return_pd_number"></p>
     <p><label>备注: </label><input type="text" name="comment"></p>
     <p>
-        <input type="submit" name="submit" value="提交">
-        <input type="reset" name="reset" value="重置">
+        <button type="submit">提交</button>
+        <button type="reset">重置</button>
     </p>
 
 </form>
