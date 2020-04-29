@@ -39,7 +39,7 @@ class Schema(voluptuous.Schema):
 
 class CustomView(View):
 
-    _schema:voluptuous.Schema = None
+    _schema:voluptuous.Schema = True
     auto_process_page = True
     _filter_null = False
 #     _perms = None

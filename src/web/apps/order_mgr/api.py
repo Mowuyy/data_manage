@@ -2,19 +2,12 @@
 
 from ..custom_views import APIView, APIException
 from .. import code_msg
+from .utils import build_order_data
 from voluptuous import Schema, Required
 
 
-data_field = ("id", "receiver", "order_status", "order_id", "apply_time", "wangwang_id", "goods_id", "mail_pd_id",
-              "return_pd_company", "return_pd_id", "comment", "update_time")
-
-"""
-`id`, `receiver`, `order_status, `order_id`, `apply_time`, `wangwang_id`, `goods_id`, `mail_pd_id`, `return_pd_company`, `return_pd_id`, `comment`, `update_time` 
-"""
-
 class UploadOrder(APIView):
 
-    _schema = True
     _filter_null = True
 
     def post(self, request):
@@ -31,16 +24,13 @@ class UploadOrder(APIView):
 
 class ListOrder(APIView):
 
-    _schema = True
-
     def get(self, request):
         sql = "SELECT * FROM `tb_order_info` WHERE `is_delete`=0 ORDER BY `id` DESC" + request.page_info.limit_clause
-        return self.db.get_all_row(sql)
+        query_result = self.db.get_all_row(sql)
+        return [build_order_data(list(data)) for data in query_result]
 
 
 class RemoveOrder(APIView):
-
-    _schema = True
 
     def post(self, request):
         order_id = request.req_args.get("order_id")
@@ -50,9 +40,8 @@ class RemoveOrder(APIView):
 
 class DetailOrder(APIView):
 
-    _schema = True
-
     def get(self, request):
         order_id = request.req_args.get("order_id")
         sql = """SELECT * FROM tb_order_info WHERE order_id=? AND is_delete=0;"""
-        return self.db.get_one_row(sql, (order_id, ))
+        query_result = self.db.get_one_row(sql, (order_id, ))
+        return build_order_data(list(query_result))

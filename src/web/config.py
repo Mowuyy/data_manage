@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import sqlite3
+import os
 import logging
 
 import flask
@@ -10,11 +10,12 @@ class Config:
     SECRET_KEY = 's@d343$##f8Ks!@ND0ar1@!dkk02fAF'
 
     # 配置日志
+    BASE_PATH = os.path.dirname(os.path.abspath(__file__))
     LOG_LEVEL = logging.INFO
     LOGGER_NAME = 'web'
     from utils.log_formatter import RequestLogFormatter
     LOG_FORMATTER = RequestLogFormatter('%(asctime)s [%(levelname)s] %(pathname)s(%(lineno)d) %(remote_addr)s user(%(user_id)s): %(message)s')
-    LOG_FILE_PATH = 'log/web.log'
+    LOG_FILE_PATH = os.path.join(BASE_PATH, 'log/web.log')
     from logging.handlers import RotatingFileHandler
     from logging import StreamHandler
     FILE_HANDLER = RotatingFileHandler(filename=LOG_FILE_PATH, maxBytes=512*1024*1024, backupCount=20)
