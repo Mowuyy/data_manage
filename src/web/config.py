@@ -4,7 +4,6 @@ import sqlite3
 import logging
 
 import flask
-from flask import current_app
 
 
 class Config:
@@ -22,6 +21,9 @@ class Config:
     CONSOLE_HANDLER = StreamHandler(flask.logging.wsgi_errors_stream)
     LOG_HANDLERS = []
 
+    # 最大分页大小
+    MAX_PAGE_SIZE = 150
+
     @staticmethod
     def init_app(app:flask.Flask):
         app.debug = app.config.get('DEBUG', True)
@@ -36,10 +38,15 @@ class Config:
 
     @staticmethod
     def init_db(app: flask.Flask, db_url):
-        app.db = sqlite3.connect(db_url, check_same_thread=False)
+
+        @app.before_request
+        def connect_db():
+            from utils.db_utils import CustomDB
+            app.db = CustomDB(db_url)
 
         @app.teardown_appcontext
         def shutdown_session(response_or_exc):
+            from flask import current_app
             db = current_app.db
             if db is not None:
                 db.close()

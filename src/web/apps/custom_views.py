@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
+import sqlite3
+
 from werkzeug.wrappers.response import Response
 from flask.views import View
-# # import voluptuous
+import voluptuous
 from flask.globals import request
 import json, datetime, uuid, decimal
 from types import GeneratorType
@@ -30,15 +32,16 @@ class PageInfo(object):
         self.limit_clause = ' LIMIT %s OFFSET %s' % (page_sz, self.offset)
 
 
-# # class Schema(voluptuous.Schema):
-# #     def __init__(self, *args, extra=voluptuous.REMOVE_EXTRA, **kwargs):
-# #         super(Schema, self).__init__(*args, extra=extra, **kwargs)
-#
-#
+class Schema(voluptuous.Schema):
+    def __init__(self, *args, extra=voluptuous.REMOVE_EXTRA, **kwargs):
+        super(Schema, self).__init__(*args, extra=extra, **kwargs)
+
+
 class CustomView(View):
-#
-#     _schema:voluptuous.Schema = None
+
+    _schema:voluptuous.Schema = None
     auto_process_page = True
+    _filter_null = False
 #     _perms = None
 #     _load_perms = True
 #     _login_required = True
@@ -78,30 +81,36 @@ class CustomView(View):
         if method is None:
             current_app.logger.warn('url="%s", method="%s"', request.url, method)
             return self._on_405()
-        all_req_args = None
+        # rtn = self._check_can_access()
+        # if rtn:
+        #     return rtn
         auto_process_page = False
-#         if self._schema:
-        try:
-            all_req_args = request.args.to_dict()
-            if request.json:
-                all_req_args.update(request.json)
-            if request.values:
-                all_req_args.update(request.values)
-            # req_args = self._schema(all_req_args)
-            req_args = all_req_args
-            if self.auto_process_page and "page" in req_args:
-                page_sz = req_args.pop('page_size')
-                if not 1 <= page_sz <= current_app.config['MAX_PAGE_SIZE']:
-                    current_app.logger.warn('url="%s", page size over max', request.url)
-                    return self._on_argument_invalid(ValueError('invalid page size'))
-                page = req_args.pop('page')
-                request.page_info = PageInfo(page, page_sz)
-                auto_process_page = True
-            request.req_args = req_args
-        # except voluptuous.MultipleInvalid as e:
-        except Exception as e:
-            current_app.logger.warn('request invalid, url="%s", args="%s", exc="%s"', request.url, all_req_args, e)
-            return self._on_argument_invalid(e)
+        all_req_args = None
+        if self._schema:
+            try:
+                all_req_args = request.args.to_dict()
+                if request.json:
+                    all_req_args.update(request.json)
+                if request.values:
+                    all_req_args.update(request.values)
+                print(all_req_args)
+                # req_args = self._schema(all_req_args)
+                req_args = all_req_args
+                if self._filter_null:
+                    req_args = {k: v if v else None for k, v in req_args.items()}
+                if self.auto_process_page and "page" in req_args:
+                    page_sz = int(req_args.pop('page_size'))
+                    if not 1 <= page_sz <= current_app.config['MAX_PAGE_SIZE']:
+                        current_app.logger.warn('url="%s", page size over max', request.url)
+                        return self._on_argument_invalid(ValueError('invalid page size'))
+                    page = int(req_args.pop('page'))
+                    request.page_info = PageInfo(page, page_sz)
+                    auto_process_page = True
+                request.req_args = req_args
+                self.db = current_app.db
+            except voluptuous.MultipleInvalid as e:
+                current_app.logger.warn('request invalid, url="%s", args="%s", exc="%s"', request.url, all_req_args, e)
+                return self._on_argument_invalid(e)
         try:
             self.pre_check(request)
             return self._packet_response(method(request, *args, **kwargs), (request.page_info if auto_process_page else None))
