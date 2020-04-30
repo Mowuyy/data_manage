@@ -1,0 +1,113 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>数据管理中心</title>
+    {% block css_file %}
+    {% endblock %}
+    <link rel="stylesheet" type="text/css" href="../static/css/icon.css" />
+    <link rel="stylesheet" href="../static/css/base.css">
+</head>
+<body>
+<div class="body_con">
+    <div class="body_top"><a href="/" style="color: #ffffff">数据管理中心</a></div>
+    <div class="body_left">
+        <ul class="body_left_list">
+            <li>
+                <label>
+                    <span>订单管理</span>
+                    <i class="iconfont iconxiajiantou"></i>
+                    <a href="javascript:;"></a>
+                </label>
+                <ul>
+                    <li>
+                        <label>
+                            <i class="iconfont iconYYGK"></i>
+                            <span>上传订单</span>
+                            <a href="/order_mgr"></a>
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <i class="iconfont iconYYGK"></i>
+                            <span>查看订单</span>
+                            <a href="javascript:;"></a>
+                        </label>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <label>
+                    <span>库存管理</span>
+                    <i class="iconfont iconxiajiantou"></i>
+                    <a href="javascript:;"></a>
+                </label>
+                <ul>
+                    <li>
+                        <label>
+                            <i class="iconfont iconYYGK"></i>
+                            <span>上传产品</span>
+                            <a href="javascript:;"></a>
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <i class="iconfont iconYYGK"></i>
+                            <span>查看产品</span>
+                            <a href="javascript:;"></a>
+                        </label>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <label>
+                    <span>数据分析</span>
+                    <i class="iconfont iconxiajiantou"></i>
+                    <a href="javascript:;"></a>
+                </label>
+                <ul>
+                    <li>
+                        <label>
+                            <i class="iconfont iconYYGK"></i>
+                            <span>报告</span>
+                            <a href="javascript:;"></a>
+                        </label>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <label>
+                    <span>回收站</span>
+                    <i class="iconfont iconxiajiantou"></i>
+                    <a href="javascript:;"></a>
+                </label>
+                <ul>
+                    <li>
+                        <label>
+                            <i class="iconfont iconYYGK"></i>
+                            <span>订单</span>
+                            <a href="javascript:;"></a>
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <i class="iconfont iconYYGK"></i>
+                            <span>库存</span>
+                            <a href="javascript:;"></a>
+                        </label>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="body_right">
+        {% block content %}
+        {% endblock %}
+    </div>
+</div>
+<script src="../static/js/jquery.min.js"></script>
+<script src="../static/js/base.js"></script>
+{% block js_file %}
+{% endblock %}
+</body>
+</html>

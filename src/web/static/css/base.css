@@ -1,0 +1,348 @@
+/*默认样式*/
+html, body, div, ul, li, h1, h2, h3, h4, h5, h6, p, dl, dt, dd, ol, form, input, textarea, th, td, select {
+    margin: 0;
+    padding: 0;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    min-height: 100%;
+}
+
+body {
+    font-family: "Microsoft YaHei";
+    font-size: 0.3rem;
+    color: #333;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: normal;
+}
+
+ul, ol {
+    list-style: none;
+}
+
+img {
+    border: none;
+    vertical-align: middle;
+}
+
+a {
+    text-decoration: none;
+    color: #232323;
+}
+
+table {
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+input, textarea {
+    outline: none;
+    border: none;
+}
+
+textarea {
+    resize: none;
+    overflow: auto;
+}
+
+.clearfix {
+    zoom: 1;
+}
+
+.clearfix:after {
+    content: ".";
+    width: 0;
+    height: 0;
+    visibility: hidden;
+    display: block;
+    clear: both;
+    overflow: hidden;
+}
+
+.fl {
+    float: left
+}
+
+.fr {
+    float: right
+}
+
+.tl {
+    text-align: left;
+}
+
+.tc {
+    text-align: center
+}
+
+.tr {
+    text-align: right;
+}
+
+.ellipse {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.inline {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+}
+.body_con{
+    width: 100%;
+    height: 100%;
+    position: relative;
+    font-size: 0;
+}
+.body_top{
+    width: 100%;
+    height: 60px;
+    /*background: #3a3e50;*/
+    background: #333951;
+    color: #fff;
+    font-size: 24px;
+    line-height: 60px;
+    text-align: center;
+}
+.body_left{
+    width:200px;
+    height: 1100px;
+    display: inline-block;
+    vertical-align: top;
+    background: #333951;
+    position: relative;
+    font-size: 18px;
+    color: #fff;
+}
+.body_right{
+    width: calc(100% - 200px);
+    height: 1100px;
+    display: inline-block;
+    vertical-align: top;
+    background:#f3faff;
+
+}
+
+.body_left_list{
+    width: 100%;
+    min-height: 1rem;
+    position: relative;
+}
+.body_left_list >li{
+    width: 100%;
+    min-height: 1px;
+    overflow: hidden;
+    border-bottom: 1px solid #333951;
+    transition:all 0.5s;
+    max-height: 1500px;
+}
+.body_left_list >li >label{
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    position: relative;
+    color: #fff;
+    font-size:16px;
+    background: #292e41;
+    display: block;
+}
+.body_left_list >li >label >span{
+    padding: 0 20px;
+    width: 150px;
+    color: #fff;
+    font-size:16px;
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.body_left_list >li >label >a{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+.body_left_list >li >label >i{
+    position: absolute;
+    top: 0;
+    right:25px;
+    font-size: 11px;
+}
+.body_left_list >li >ul{
+    width: 100%;
+    min-height: 1px;
+    position: relative;
+}
+.body_left_list >li >ul >li{
+    width: 100%;
+    max-height: 50px;
+    overflow: hidden;
+    transition: all 0.5s;
+}
+.body_left_list >li >ul >li:hover{
+    max-height: calc(200 * 8px);
+}
+.body_left_list >li >ul >li >label{
+    width: 100%;
+    height: 50px;
+    background:#333951;
+    line-height: 50px;
+    position: relative;
+    transition: all 0.5s;
+    display: block;
+}
+.body_left_list >li >ul >li:hover >label{
+    background: #151b32;
+    border-left: 6px solid #1D8FF0;
+}
+.body_left_list >li >ul >li:hover >label >i:nth-child(3){
+    transform: rotate(90deg);
+}
+.body_left_list >li >ul >li >label >i:nth-child(1){
+    padding-left:  30px;
+    font-size: 20px;
+    display: inline-block;
+    vertical-align: top;
+}
+.body_left_list >li >ul >li >label >span{
+   font-size: 15px;
+    color: #a1a3ab;
+    width: 90px;
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.body_left_list >li >ul >li >label >i:nth-child(3){
+    position: absolute;
+    top: 0;
+    right:25px;
+}
+.body_left_list >li >ul >li >label >a{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+.body_left_list >li >ul >li >ul{
+    width: 100%;
+    min-height: 1px;
+}
+.body_left_list >li >ul >li >ul >li{
+    max-height: 40px;
+    transition: all 0.5s;
+    overflow: hidden;
+    position: relative;
+}
+.body_left_list >li >ul >li >ul >li:hover{
+    max-height: calc(200 * 8px);
+}
+.body_left_list >li >ul >li >ul >li >label{
+    width: 100%;
+    height:40px;
+    background: #3a3e50;
+    position: relative;
+    line-height: 40px;
+    display: block;
+    transition: all 0.5s;
+}
+.body_left_list >li >ul >li >ul >li:hover >label >span{
+    color: #fff;
+}
+.body_left_list >li >ul >li >ul >li:hover ul{
+    display: block;
+}
+.body_left_list >li >ul >li >ul >li:hover >label >i{
+    color: #fff;
+}
+.body_left_list >li >ul >li >ul >li >label >span{
+    font-size:14px;
+    padding-left: 70px;
+    color: #a1a3ab;
+    width: 150px;
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.body_left_list >li >ul >li >ul >li >label >i{
+    position: absolute;
+    top: 0;
+    right:25px;
+    font-size: 14px;
+}
+.body_left_list >li >ul >li >ul >li >label >a{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 2px;
+    left: 0;
+    z-index: 1;
+}
+.body_left_list >li >ul >li >ul >li >ul{
+    width: 120px;
+    min-height: 1px;
+    position: fixed;
+    top:0;
+    left: 200px;
+    display: none;
+}
+.body_left_list >li >ul >li >ul >li >ul >li{
+    width: 100%;
+    min-height: 40px;
+    position: relative;
+    transition:all 0.5s;
+    background: #fff;
+}
+.body_left_list >li >ul >li >ul >li >ul >li >label{
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 30px;
+}
+.body_left_list >li >ul >li >ul >li >ul >li >label >span{
+    width: 60%;
+    height: 40px;
+    font-size: 12px;
+    line-height: 40px;
+    padding-left: 20px;
+    display: block;
+    color: #999;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    transition:all 0.5s;
+}
+.body_left_list >li >ul >li >ul >li >ul >li >label >i{
+    position: absolute;
+    top: 13px;
+    right:25px;
+    font-size: 14px;
+    color: #999;
+}
+.body_left_list >li >ul >li >ul >li >ul >li:hover >label >span{
+    color: #1D8FF0;
+}
+.body_left_list >li >ul >li >ul >li >ul >li:hover >label >i{
+    color: #1D8FF0;
+}
+.body_left_list >li >ul >li >ul >li >ul >li >label >a{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}

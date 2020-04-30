@@ -7,4 +7,4 @@ from . import app
 
 @app.route("/")
 def order_mgr():
-    return render_template("order_upload.html")
+    return render_template("apps/order_upload.html")

@@ -2,8 +2,20 @@
 
 import os
 from pathlib import Path
+from datetime import datetime
 
 from flask import request
+
+__all__ = [
+    "get_dt",
+    "get_remote_addr",
+    "get_client_abbr",
+    "get_client_logo_file"
+]
+
+
+def get_dt():
+    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 
 def get_remote_addr():
@@ -11,7 +23,7 @@ def get_remote_addr():
 
 
 def get_client_abbr(db, client_id):
-    return db.get_value('SELECT abbr FROM tb_client WHERE id=%s AND abbr IS NOT NULL', (client_id,), default='订单管理系统')
+    return db.get_value('SELECT abbr FROM tb_client WHERE id=%s AND abbr IS NOT NULL', (client_id,), default='数据管理系统')
 
 
 def get_client_logo_file(db, client_id):
