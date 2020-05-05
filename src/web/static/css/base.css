@@ -346,3 +346,7 @@ textarea {
     left: 0;
     z-index: 1;
 }
+
+.right_table >tr {
+    text-align: center
+}

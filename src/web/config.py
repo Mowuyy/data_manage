@@ -25,6 +25,10 @@ class Config:
     # 最大分页大小
     MAX_PAGE_SIZE = 150
 
+    # 上传图片
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'JPG', 'PNG', 'gif', 'GIF'}
+    UPLOAD_DIR = "upload/images"
+
     @staticmethod
     def init_app(app:flask.Flask):
         app.debug = app.config.get('DEBUG', True)

@@ -5,9 +5,8 @@
 {% endblock %}
 
 {% block content %}
-<form class="upload_order_form" action="/order_mgr/upload_order" method="post">
+<form id="upload_order_form">
     <p><label>收件人: </label><input type="text" name="receiver"></p>
-
     <p><label>订单编号: </label><input type="text" name="order_id"></p>
     <p><label>申请时间: </label><input type="text" name="apply_time"></p>
     <p><label>旺旺名称: </label><input type="text" name="wangwang_id"></p>
@@ -25,9 +24,14 @@
         </select>
     </p>
     <p>
-        <button type="submit">提交</button>
+        <button type="button" onclick="orderSubmit()">提交</button>
         <button type="reset">重置</button>
     </p>
 
 </form>
+{% endblock %}
+
+{% block js_file %}
+<script src="../../static/js/utils.js"></script>
+<script src="../../static/js/apps/order_mgr.js"></script>
 {% endblock %}

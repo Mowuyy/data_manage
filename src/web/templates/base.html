@@ -24,14 +24,14 @@
                         <label>
                             <i class="iconfont iconYYGK"></i>
                             <span>上传订单</span>
-                            <a href="/order_mgr"></a>
+                            <a href="/order_mgr/render_upload"></a>
                         </label>
                     </li>
                     <li>
                         <label>
                             <i class="iconfont iconYYGK"></i>
-                            <span>查看订单</span>
-                            <a href="javascript:;"></a>
+                            <span onclick="showOrder()">查看订单</span>
+{#                            <a href="javascript:;" onclick="showOrder()"></a>#}
                         </label>
                     </li>
                 </ul>
@@ -106,7 +106,9 @@
     </div>
 </div>
 <script src="../static/js/jquery.min.js"></script>
+<script src="../static/js/utils.js"></script>
 <script src="../static/js/base.js"></script>
+<script src="../static/js/apps/order_mgr.js"></script>
 {% block js_file %}
 {% endblock %}
 </body>

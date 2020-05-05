@@ -1,20 +1,20 @@
-.upload_order_form {
+#upload_order_form {
     text-align: center;
     font-size: 20px;
     color: #333951;
 }
 
-.upload_order_form >p {
+#upload_order_form >p {
     margin: 20px;
 }
 
-.upload_order_form >p >label {
+#upload_order_form >p >label {
     display: inline-block;
     width: 150px;
     text-align: right;
 }
 
-.upload_order_form >p >input {
+#upload_order_form >p >input {
     margin-left: 10px;
     text-align:left;
     font-size:0.8em;
@@ -27,10 +27,11 @@
 
 .order_status {
     width: 30%;
-    height:2.0em;
+    /*height:3.0em;*/
+    height: 35px;
 }
 
-.upload_order_form >p >button {
+#upload_order_form >p >button {
     width: 60px;
     height: 30px;
     margin-left: 120px;
