@@ -1,12 +1,14 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
     <title>数据管理中心</title>
     {% block css_file %}
     {% endblock %}
     <link rel="stylesheet" type="text/css" href="../static/css/icon.css" />
     <link rel="stylesheet" href="../static/css/base.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/jquery.sPage.css">
 </head>
 <body>
 <div class="body_con">
@@ -86,7 +88,7 @@
                         <label>
                             <i class="iconfont iconYYGK"></i>
                             <span>订单</span>
-                            <a href="javascript:;"></a>
+                            <a href="javascript:;" onclick="showRecycleOrder()"></a>
                         </label>
                     </li>
                     <li>
@@ -106,6 +108,7 @@
     </div>
 </div>
 <script src="../static/js/jquery.min.js"></script>
+<script src="../static/js/jquery.sPage.js"></script>
 <script src="../static/js/utils.js"></script>
 <script src="../static/js/base.js"></script>
 <script src="../static/js/apps/order_mgr.js"></script>

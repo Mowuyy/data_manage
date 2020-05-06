@@ -44,27 +44,39 @@ class UploadOrder(APIView):
 class ListOrder(APIView):
 
     def get(self, request):
-        sql = "SELECT * FROM `tb_order_info` WHERE `is_delete`=0 ORDER BY `id` DESC" + request.page_info.limit_clause
-        query_result = self.db.get_all_row(sql)
+        if request.req_args.get("recycle"):
+            is_delete = 1
+        else:
+            is_delete = 0
+        sql_cnt = "SELECT COUNT(*) FROM `tb_order_info` WHERE `is_delete`=?"
+        sql_data = "SELECT `receiver`, `order_id`, `update_time` FROM `tb_order_info` WHERE `is_delete`=? ORDER BY " \
+                   "`update_time` DESC" + request.page_info.limit_clause
+        cnt = self.db.get_value(sql_cnt, (is_delete, ))
+        query_result = self.db.get_all_row(sql_data, (is_delete, ))
         field_name = g.field_name
-        del field_name[0]
-        del field_name[11:]
-        result = list()
-        for data in query_result:
-            data = list(data)
-            del data[0]
-            del data[11:]
-            result.append(dict(zip(field_name, data)))
-        return result
+        if cnt:
+            request.page_info.total = cnt
+        return [dict(zip(field_name, data)) for data in query_result]
 
 
 class RemoveOrder(APIView):
 
     def post(self, request):
         dt = get_dt()
+        try:
+            recycle = int(request.req_args.get("recycle"))
+        except:
+            raise APIException(code_msg.CODE_INVALID_ARGUEMNTS)
         order_id = request.req_args.get("order_id")
-        sql = """UPDATE `tb_order_info` SET `is_delete`=1, `update_time`=? WHERE `order_id`=?"""
-        self.db.execute(sql, (dt, order_id))
+        update_sql = """UPDATE `tb_order_info` SET `is_delete`=?, `update_time`=? WHERE `order_id`=?"""
+        if recycle == 1:  # 恢复
+            self.db.execute(update_sql, (0, dt, order_id))
+        elif recycle == 2:  # 彻底删除
+            self.db.execute("""DELETE FROM tb_order_info WHERE `order_id`=?""", (order_id, ))
+        elif recycle == 0:  # 逻辑删除
+            self.db.execute(update_sql, (1, dt, order_id))
+        else:
+            raise APIException(code_msg.CODE_INVALID_ARGUEMNTS)
 
 
 class DetailOrder(APIView):

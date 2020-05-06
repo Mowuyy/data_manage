@@ -35,3 +35,25 @@ function getRequest(url, data, succCallback, loading=false, errCallback=undefine
 function postRequest(url, data, succCallback, loading=false, errCallback=undefined) {
     return ajaxRequest('post', url, data, succCallback, loading, errCallback=undefined);
 }
+
+var pageInfo = {
+    "pageSize": 15
+};
+
+function pageAction(cssClass, callBackFunc, total, page) {
+    $(cssClass).sPage({
+        page: page,
+        total: total,
+        pageSize: pageInfo.pageSize,
+        showTotal: true,
+        totalTxt: "共{total}条",
+        noData: false,
+        showSkip: true,
+        showPN: true,
+        prevPage: "上一页",
+        nextPage: "下一页",
+        fastForward: 5,
+        backFun: callBackFunc
+    });
+}
+
