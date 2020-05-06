@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block css_file %}
+<link rel="stylesheet" href="../../static/css/apps/order_detail.css">
+{% endblock %}
+
+{% block content %}
+    <div class="detail_css">
+        <p><label>订单编号: </label><span>{{ data.order_id  }}</span></p>
+        <p><label>收件人: </label><span>{{ data.receiver }}</span></p>
+        <p><label>旺旺名称: </label><span>{{ data.wangwang_id }}</span></p>
+        <p><label>订单状态: </label><span>{{ data.order_status }}</span></p>
+        <p><label>申请时间: </label><span>{{ data.apply_time }}</span></p>
+        <p><label>产品型号: </label><span>{{ data.goods_id }}</span></p>
+        <p><label>寄件物流单号: </label><span>{{ data.mail_pd_id }}</span></p>
+        <p><label>退货物流公司: </label><span>{{ data.return_pd_company }}</span></p>
+        <p><label>退货物流单号: </label><span>{{ data.return_pd_id }}</span></p>
+        <p><label>备注: </label><span>{{ data.comment }}</span></p>
+    </div>
+{% endblock %}

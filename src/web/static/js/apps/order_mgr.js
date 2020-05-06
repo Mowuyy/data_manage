@@ -1,5 +1,5 @@
 // 订单上传
-function orderSubmitSuccess(result) {
+function orderSubmitSuccess() {
     alert("订单上传成功！");
     $("#upload_order_form input").val("");
 }
@@ -10,11 +10,11 @@ function orderSubmit() {
     $.each(formDataArr, function (i, item) {
         formData[item.name] = item.value;
     });
-    postRequest("/order_mgr/upload_order", formData, orderSubmitSuccess)
+    postRequest("/order_mgr/upload_order", formData, orderSubmitSuccess);
 }
 
 
-// 查看订单
+// 订单列表页
 function showOrder(page) {
     getRequest("/order_mgr/list_order", {"page": page || 1, "page_size": pageInfo.pageSize}, showOrderSuccess);
 }
@@ -34,8 +34,8 @@ function showOrderSuccess(result) {
             "<tr style='font-size: 16px;color: #999'><td>" + data[i].order_id + "</td>" +
             "<td>" + data[i].receiver + "</td>" +
             "<td>" + data[i].update_time + "</td>" +
-            "<td><a style='color: #999;' href='javascript:;' onclick='showDetail(" + data[i].order_id + ")'>详情</a> | " +
-            "<a style='color: #999' href='javascript:;' onclick='removeDetail(" + data[i].order_id + ")'>删除</a></td>" +
+            "<td><a style='color: #999;' href='/order_mgr/order_detail/" + data[i].order_id + "' target='_blank'>详情</a> | " +
+                "<a style='color: #999' href='javascript:;' onclick='removeDetail(" + data[i].order_id + ")'>删除</a></td>" +
             "</tr>");
     }
     $(".page_content th, .page_content td").css({
@@ -46,48 +46,6 @@ function showOrderSuccess(result) {
     pageAction(".page_flag", showOrder, result.data.total, result.data.page);
 }
 
-function showDetail(orderId) {
-    getRequest("/order_mgr/detail_order", {"order_id": orderId}, showDetailSuccess);
-}
-
-function showDetailSuccess(result) {
-    orderStatus = {1: "退货", 2: "退改", 3: "丢件", 4: "其他"};
-
-    function filterNull(data) {
-        if (data) {
-            return data
-        } else {
-            return "空"
-        }
-    }
-
-    $(".body_right").empty();
-    $(".body_right").append(
-        "<label>订单编号: </label><span>" + filterNull(result.data.order_id)+ "</span><br>" +
-        "<label>收件人: </label><span>" + filterNull(result.data.receiver) + "</span><br>" +
-        "<label>旺旺名称: </label><span>" + filterNull(result.data.wangwang_id) + "</span><br>" +
-        "<label>订单状态: </label><span>" + filterNull(orderStatus[result.data.order_status]) + "</span><br>" +
-        "<label>申请时间: </label><span>" + filterNull(result.data.apply_time) + "</span><br>" +
-        "<label>产品型号: </label><span>" + filterNull(result.data.goods_id) + "</span><br>" +
-        "<label>寄件物流单号: </label><span>" + filterNull(result.data.mail_pd_id) + "</span><br>" +
-        "<label>退货物流公司: </label><span>" + filterNull(result.data.return_pd_company) + "</span><br>" +
-        "<label>退货物流单号: </label><span>" + filterNull(result.data.return_pd_id) + "</span><br>" +
-        "<label>备注: </label><span>" + filterNull(result.data.comment)
-    );
-    $(".body_right").css({
-        "font-size": '18px',
-        "color": '#999'
-    });
-    $(".body_right >label").css({
-        "display": "inline-block",
-        "width": "150px",
-        "text-align": "right",
-        "margin-right": '20px',
-        "margin-left": '50px',
-        "margin-top": '20px'
-    })
-
-}
 
 function removeDetail(orderId) {
     postRequest("/order_mgr/remove_order", {"order_id": orderId, "recycle": 0}, removeDetailSuccess);
@@ -107,7 +65,7 @@ function showRecycleOrder(page) {
 function showRecycleOrderSuccess(result) {
     var data = result.data.items;
     if (data.length == 0) {
-        $(".body_right").empty().html("<h1 style='text-align: center;margin-top: 200px;font-size: 20px;color: #999;'>无数据，请您先上传订单信息</h1>");
+        $(".body_right").empty().html("<h1 style='text-align: center;margin-top: 200px;font-size: 20px;color: #999;'>无订单数据删除！</h1>");
         return;
     }
     $(".body_right").empty().html("<div class='page_content'></div><div class='page_flag'></div>");

@@ -77,17 +77,3 @@ class RemoveOrder(APIView):
             self.db.execute(update_sql, (1, dt, order_id))
         else:
             raise APIException(code_msg.CODE_INVALID_ARGUEMNTS)
-
-
-class DetailOrder(APIView):
-
-    def get(self, request):
-        order_id = request.req_args.get("order_id")
-        sql = """SELECT * FROM tb_order_info WHERE order_id=? AND is_delete=0"""
-        query_result = list(self.db.get_one_row(sql, (order_id, )))
-        field_name = g.field_name
-        del field_name[0]
-        del field_name[11:]
-        del query_result[0]
-        del query_result[11:]
-        return dict(zip(field_name, query_result))

@@ -1,0 +1,22 @@
+.detail_css{
+    color: #999
+}
+
+.detail_css label {
+    font-size: 18px;
+    text-align: right;
+    margin-left: 60px;
+}
+
+.detail_css span {
+    font-size: 15px;
+    text-align: left;
+    margin-left: 20px;
+}
+
+.detail_css label, .detail_css span {
+    display: inline-block;
+    width: 150px;
+    margin-top: 20px
+
+}
