@@ -48,12 +48,13 @@ class ListOrder(APIView):
     _isdigit_regex = re.compile(r'\d+')
 
     def get(self, request):
-        data_cond, data_args = self._get_sql_cond_args(request)
-        sql_data = "SELECT `receiver`, `order_id`, `update_time` FROM `tb_order_info` WHERE " + data_cond + \
+        cond, args = self._get_sql_cond_args(request)
+        cnt_sql = """SELECT COUNT(*) FROM `tb_order_info` WHERE """ + cond
+        sql_data = "SELECT `receiver`, `order_id`, `update_time` FROM `tb_order_info` WHERE " + cond + \
                    " ORDER BY `update_time` DESC" + request.page_info.limit_clause
-        query_result = self.db.get_all_row(sql_data, data_args)
+        cnt = self.db.get_value(cnt_sql, args)
+        query_result = self.db.get_all_row(sql_data, args)
         field_name = g.field_name
-        cnt = len(query_result)
         if cnt:
             request.page_info.total = cnt
         return [dict(zip(field_name, data)) for data in query_result]
@@ -66,15 +67,15 @@ class ListOrder(APIView):
             is_delete = 0
         search_order = req_args.get("search_order", "")
         if self._isdigit_regex.match(search_order):
-            data_cond = "`is_delete`=? AND `order_id` LIKE ?"
-            data_args = (is_delete, "%"+search_order+"%")
+            cond = "`is_delete`=? AND `order_id` LIKE ?"
+            args = (is_delete, "%"+search_order+"%")
         elif self._cn_regex.match(search_order):
-            data_cond = "`is_delete`=? AND `receiver` LIKE ?"
-            data_args = (is_delete, "%"+search_order+"%")
+            cond = "`is_delete`=? AND `receiver` LIKE ?"
+            args = (is_delete, "%"+search_order+"%")
         else:
-            data_cond = "`is_delete`=?"
-            data_args = (is_delete, )
-        return data_cond, data_args
+            cond = "`is_delete`=?"
+            args = (is_delete, )
+        return cond, args
 
 
 class RemoveOrder(APIView):

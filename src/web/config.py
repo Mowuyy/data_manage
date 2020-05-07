@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import sys
 import logging
 
 import flask
@@ -9,8 +10,14 @@ import flask
 class Config:
     SECRET_KEY = 's@d343$##f8Ks!@ND0ar1@!dkk02fAF'
 
+    # 项目路径
+    if hasattr(sys, 'frozen'):
+        BASE_PATH = os.path.dirname(os.path.abspath(sys.executable))
+    else:
+        BASE_PATH = os.path.dirname(os.path.abspath(__file__))
+
+    print("base_path: ", BASE_PATH)
     # 配置日志
-    BASE_PATH = os.path.dirname(os.path.abspath(__file__))
     LOG_LEVEL = logging.INFO
     LOGGER_NAME = 'web'
     from utils.log_formatter import RequestLogFormatter
@@ -62,7 +69,7 @@ class DevelopmentConfig(Config):
     """开发模式"""
     DEBUG = True
 
-    DB_URL = "./db/data_mgr.db"
+    DB_URL = os.path.join(Config.BASE_PATH, "db/data_mgr.db")
 
     #日志配置
     LOG_LEVEL = logging.DEBUG
@@ -73,10 +80,10 @@ class ProductionConfig(Config):
     """生产模式"""
     DEBUG = False
 
-    DB_URL = "./db/data_mgr.db"
+    DB_URL = os.path.join(Config.BASE_PATH, "db/data_mgr.db")
 
     # 日志配置
-    LOG_FILE_PATH = '/var/log/data_manage/web/web.log'
+    LOG_FILE_PATH = os.path.join(Config.BASE_PATH, 'log/web.log')
     from logging.handlers import RotatingFileHandler
     try:
         FILE_HANDLER = RotatingFileHandler(filename=LOG_FILE_PATH, maxBytes=512 * 1024 * 1024, backupCount=20)

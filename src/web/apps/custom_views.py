@@ -93,7 +93,7 @@ class CustomView(View):
                     all_req_args.update(request.json)
                 if request.values:
                     all_req_args.update(request.values)
-                print(all_req_args)
+                # print(all_req_args)
                 # req_args = self._schema(all_req_args)
                 req_args = all_req_args
                 if self._filter_null:

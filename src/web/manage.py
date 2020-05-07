@@ -29,6 +29,6 @@ def product_server():
 
 if __name__ == '__main__':
 
-    development_server()
+    # development_server()
 
-    # product_server()
+    product_server()
