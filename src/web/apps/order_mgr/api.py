@@ -2,6 +2,7 @@
 
 
 import os
+import re
 
 from ..custom_views import APIView, APIException
 from .. import code_msg
@@ -43,20 +44,37 @@ class UploadOrder(APIView):
 
 class ListOrder(APIView):
 
+    _cn_regex = re.compile(r'[a-zA-Z\u4e00-\u9fa5]+')
+    _isdigit_regex = re.compile(r'\d+')
+
     def get(self, request):
-        if request.req_args.get("recycle"):
-            is_delete = 1
-        else:
-            is_delete = 0
-        sql_cnt = "SELECT COUNT(*) FROM `tb_order_info` WHERE `is_delete`=?"
-        sql_data = "SELECT `receiver`, `order_id`, `update_time` FROM `tb_order_info` WHERE `is_delete`=? ORDER BY " \
-                   "`update_time` DESC" + request.page_info.limit_clause
-        cnt = self.db.get_value(sql_cnt, (is_delete, ))
-        query_result = self.db.get_all_row(sql_data, (is_delete, ))
+        data_cond, data_args = self._get_sql_cond_args(request)
+        sql_data = "SELECT `receiver`, `order_id`, `update_time` FROM `tb_order_info` WHERE " + data_cond + \
+                   " ORDER BY `update_time` DESC" + request.page_info.limit_clause
+        query_result = self.db.get_all_row(sql_data, data_args)
         field_name = g.field_name
+        cnt = len(query_result)
         if cnt:
             request.page_info.total = cnt
         return [dict(zip(field_name, data)) for data in query_result]
+
+    def _get_sql_cond_args(self, request):
+        req_args = request.req_args
+        if req_args.get("recycle"):
+            is_delete = 1
+        else:
+            is_delete = 0
+        search_order = req_args.get("search_order", "")
+        if self._isdigit_regex.match(search_order):
+            data_cond = "`is_delete`=? AND `order_id` LIKE ?"
+            data_args = (is_delete, "%"+search_order+"%")
+        elif self._cn_regex.match(search_order):
+            data_cond = "`is_delete`=? AND `receiver` LIKE ?"
+            data_args = (is_delete, "%"+search_order+"%")
+        else:
+            data_cond = "`is_delete`=?"
+            data_args = (is_delete, )
+        return data_cond, data_args
 
 
 class RemoveOrder(APIView):

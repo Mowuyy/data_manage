@@ -37,7 +37,7 @@ function postRequest(url, data, succCallback, loading=false, errCallback=undefin
 }
 
 var pageInfo = {
-    "pageSize": 12
+    "pageSize": 10
 };
 
 function pageAction(cssClass, callBackFunc, total, page) {
