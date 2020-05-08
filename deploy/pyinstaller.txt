@@ -1,0 +1,15 @@
+cd data_manage\src\web
+
+# -d生成一个文件目录包含可执行文件和相关动态链接库和资源文件等
+pyinstaller  manage.py -d all -w
+# 复制自定义配置文件  
+cp -a ..\..\deploy\manage.spec .
+cat manage.spec
+pyinstaller manage.py -D -w
+
+# 复制除python文件以外的资源文件到dist\manage下
+cp -a log dist\manage
+cp -a db dist\manage
+cp -a static dist\manage
+cp -a templates dist\manage
+ls dist\manage\db dist\manage\log dist\manage\static dist\manage\templates

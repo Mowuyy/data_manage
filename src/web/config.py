@@ -16,7 +16,6 @@ class Config:
     else:
         BASE_PATH = os.path.dirname(os.path.abspath(__file__))
 
-    print("base_path: ", BASE_PATH)
     # 配置日志
     LOG_LEVEL = logging.INFO
     LOGGER_NAME = 'web'
@@ -69,7 +68,7 @@ class DevelopmentConfig(Config):
     """开发模式"""
     DEBUG = True
 
-    DB_URL = os.path.join(Config.BASE_PATH, "db/data_mgr.db")
+    DB_URL = os.path.join(Config.BASE_PATH, "db/data_mgr_dev.db")
 
     #日志配置
     LOG_LEVEL = logging.DEBUG
@@ -80,7 +79,7 @@ class ProductionConfig(Config):
     """生产模式"""
     DEBUG = False
 
-    DB_URL = os.path.join(Config.BASE_PATH, "db/data_mgr.db")
+    DB_URL = os.path.join(Config.BASE_PATH, "db/data_mgr_product.db")
 
     # 日志配置
     LOG_FILE_PATH = os.path.join(Config.BASE_PATH, 'log/web.log')

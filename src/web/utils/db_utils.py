@@ -26,13 +26,14 @@ class CustomDB(object):
             self.cnn.rollback()
             raise APIException(CODE_DB_ROLLBACK)
 
-    def get_one_row(self, sql, *args, field=False, **kwargs):
+    def get_one_row(self, sql, *args, **kwargs):
         ret = self.execute(sql, *args, **kwargs)
         g.field_name = self.get_field_name(ret)
         return self.cursor.fetchone()
 
     def get_last_row(self, sql, *args, **kwargs):
-        self.execute(sql, *args, **kwargs)
+        ret = self.execute(sql, *args, **kwargs)
+        g.field_name = self.get_field_name(ret)
         result = self.cursor.fetchall()
         if result:
             return result[-1]
@@ -54,20 +55,3 @@ class CustomDB(object):
     def close(self):
         self.cursor.close()
         self.cnn.close()
-
-
-if __name__ == '__main__':
-
-    db = CustomDB("../db/data_mgr.db")
-    # res = db.execute("insert into order_info(id, receiver, order_status) VALUES (?, ?, ?)", (3, "黎明", 1))
-    # res = db.cursor.fetchone()
-    # res = db.get_value("select id from order_info ORDER BY id DESC;")
-    res = db.get_all_row("select * from tb_order_info WHERE is_delete=0;")
-
-    # select_sql = """SELECT 1 FROM order_info WHERE receiver=? AND order_number=?;"""
-    # res = db.get_value(select_sql, ("老王", 547))
-
-    print(res)
-
-    db.close()
-

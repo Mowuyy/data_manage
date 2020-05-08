@@ -18,7 +18,7 @@ _reg = re.compile(r'^CODE.*?=\s*(\d+)\s*(?:\#\s*(.*?))?\s*$')
 
 
 def _load_all():
-    with open(__file__, encoding='utf8') as f:
+    with open(__file__, encoding='utf-8', errors='ignore') as f:
         for line in f:
             line = line.strip()
             res = _reg.match(line)
