@@ -10,7 +10,7 @@ def order_mgr():
     return render_template("apps/order_upload.html")
 
 
-@app.route("/order_detail/<int:order_id>")
+@app.route("/order_detail/<string:order_id>")
 def order_detail(order_id):
     db = current_app.db
     query_result = list(db.get_one_row("""SELECT * FROM tb_order_info WHERE order_id=? AND is_delete=0""", (order_id, )))

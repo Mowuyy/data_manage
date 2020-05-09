@@ -4,13 +4,9 @@ import os
 
 from apps import create_app
 
-from flask_script import Manager, Shell
-from tornado.httpserver import HTTPServer
-from tornado.wsgi import WSGIContainer
-from tornado.ioloop import IOLoop
-
 
 def development_server():
+    from flask_script import Manager, Shell
     app = create_app(os.getenv('FLASK_CONFIG') or 'default')
 
     def make_shell_context():
@@ -21,6 +17,9 @@ def development_server():
 
 
 def product_server():
+    from tornado.httpserver import HTTPServer
+    from tornado.wsgi import WSGIContainer
+    from tornado.ioloop import IOLoop
     app = create_app('production')
     server = HTTPServer(WSGIContainer(app))
     server.listen(80)
@@ -29,6 +28,6 @@ def product_server():
 
 if __name__ == '__main__':
 
-    # development_server()
+    development_server()
 
-    product_server()
+    # product_server()

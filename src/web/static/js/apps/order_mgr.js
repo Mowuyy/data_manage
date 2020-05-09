@@ -19,34 +19,47 @@ function showOrder(page) {
     getRequest("/order_mgr/list_order", {"page": page || 1, "page_size": pageInfo.pageSize}, showOrderSuccess);
 }
 
-function showOrderSuccess(result) {
+
+
+function showContent(result, recycle) {
     var data = result.data.items;
     if (data.length == 0) {
-        $(".body_right").empty().html("<h1 style='text-align: center;margin-top: 200px;font-size: 20px;color: #999;'>无数据，请您先上传订单信息</h1>");
+        $(".body_right").empty().html("<h1 style='text-align: center;margin-top: 200px;font-size: 20px;color: #999;'>无订单数据删除！</h1>");
         return;
     }
     $(".body_right").empty().html("<div class='page_content'></div><div class='page_flag'></div>");
-    $(".page_flag").css({"margin-top": "50px", "text-align": "center"});
-    $(".page_content").append(
-        '<div id="search_id" style="margin-left: 120px;margin-top: 50px;">' +
-        '<input name="" type="text" placeholder="请输入订单号或收件人" style="margin-right: 20px;width:200px;height: 25px;border:0.5px solid #378888">' +
-        '<a href="javascript:void(0);" data-type="reload" onclick="searchOrder()"><img style="margin-bottom: 5px;" src="/static/images/ser-icon01.png"></a></div>' +
-        '<table><tr style="font-size: 20px;color: #3a3e50;"><th>订单号</th><th>收件人</th><th>上传时间</th><th>操作</th></tr></table>');
-        for (var i=0; i<data.length; i++) {
-            $(".page_content"+ " table").append(
-                "<tr style='font-size: 16px;color: #999'><td>" + data[i].order_id + "</td>" +
-                "<td>" + data[i].receiver + "</td>" +
-                "<td>" + data[i].update_time + "</td>" +
-                "<td><a style='color: #999;' href='/order_mgr/order_detail/" + data[i].order_id + "' target='_blank'>详情</a> | " +
-                    "<a style='color: #999' href='javascript:;' onclick='removeDetail(" + data[i].order_id + ")'>删除</a></td>" +
-                "</tr>");
+    var content = "";
+    content += '<div id="search_id" style="margin-left: 120px;margin-top: 50px;">';
+    content += '<input name="" type="text" placeholder="请输入订单号或收件人" style="margin-right: 20px;width:200px;height: 25px;border:0.5px solid #378888">';
+    content += '<a href="javascript:void(0);" data-type="reload" onclick="searchOrder()"><img style="margin-bottom: 5px;" src="/static/images/ser-icon01.png"></a></div>';
+    content += '<table><tr style="font-size: 20px;color: #3a3e50;"><th>订单号</th><th>收件人</th><th>上传时间</th><th>操作</th></tr>';
+    for (var i=0; i<data.length; i++) {
+        content += "<tr style='font-size: 16px;color: #999'><td>" + data[i].order_id + "</td>";
+        content += "<td>" + data[i].receiver + "</td>";
+        content += "<td>" + data[i].update_time + "</td>";
+        var orderId = data[i].order_id;
+        if (recycle) {
+            content += "<td><a style='color: #999;' href='javascript:;' onclick='recoverDeleteOrder(\"" + orderId + "\", 1)'>恢复</a> | ";
+            content += "<a style='color: #999' href='javascript:;' onclick='recoverDeleteOrder(\"" + orderId + "\", 2)'>彻底删除</a></td>";
+        } else {
+            content += "<td><a style='color: #999;' href='/order_mgr/order_detail/" + orderId + "' target='_blank'>详情</a> | ";
+            content += "<a style='color: #999' href='javascript:;' onclick='removeDetail(\"" + orderId + "\")'>删除</a></td></tr>";
         }
+    }
+    content += "</table>";
+    $(".page_content").append(content);
+    $(".page_flag").css({"margin-top": "50px", "text-align": "center"});
     $(".page_content th, .page_content td").css({
         "width": "10%",
         "text-align": "center",
         "padding-top": "20px"
     });
-    pageAction(".page_flag", showOrder, result.data.total, result.data.page);
+    pageAction(".page_flag", showRecycleOrder, result.data.total, result.data.page);
+
+}
+
+function showOrderSuccess(result) {
+    showContent(result, false);
 }
 
 // 搜索框
@@ -59,11 +72,9 @@ function searchOrder(page, status) {
     var url = "/order_mgr/list_order";
     var data = {"page": page || 1, "page_size": pageInfo.pageSize, "search_order": orderInfo};
     if (status == 1) {
-        // 订单回收站
         data["recycle"] = 1;
         getRequest(url, data, showRecycleOrderSuccess);
     } else {
-        // 订单页
         getRequest(url, data, showOrderSuccess);
     }
 }
@@ -85,33 +96,7 @@ function showRecycleOrder(page) {
 }
 
 function showRecycleOrderSuccess(result) {
-    var data = result.data.items;
-    if (data.length == 0) {
-        $(".body_right").empty().html("<h1 style='text-align: center;margin-top: 200px;font-size: 20px;color: #999;'>无订单数据删除！</h1>");
-        return;
-    }
-    $(".body_right").empty().html("<div class='page_content'></div><div class='page_flag'></div>");
-    $(".page_flag").css({"margin-top": "50px", "text-align": "center"});
-    $(".page_content").append(
-        '<div id="search_id" style="margin-left: 120px;margin-top: 50px;">' +
-        '<input name="" type="text" placeholder="请输入订单号或收件人" style="margin-right: 20px;width:200px;height: 25px;border:0.5px solid #378888">' +
-        '<a href="javascript:void(0);" data-type="reload" onclick="searchOrder(1, 1)"><img style="margin-bottom: 5px;" src="/static/images/ser-icon01.png"></a></div>' +
-        '<table><tr style="font-size: 20px;color: #3a3e50;"><th>订单号</th><th>收件人</th><th>上传时间</th><th>操作</th></tr></table>');
-        for (var i=0; i<data.length; i++) {
-            $(".page_content"+ " table").append(
-                "<tr style='font-size: 16px;color: #999'><td>" + data[i].order_id + "</td>" +
-                "<td>" + data[i].receiver + "</td>" +
-                "<td>" + data[i].update_time + "</td>" +
-                "<td><a style='color: #999;' href='javascript:;' onclick='recoverDeleteOrder(" + data[i].order_id + ", 1)'>恢复</a> | " +
-                "<a style='color: #999' href='javascript:;' onclick='recoverDeleteOrder(" + data[i].order_id + ", 2)'>彻底删除</a></td>" +
-                "</tr>");
-        }
-    $(".page_content th, .page_content td").css({
-        "width": "10%",
-        "text-align": "center",
-        "padding-top": "20px"
-    });
-    pageAction(".page_flag", showRecycleOrder, result.data.total, result.data.page);
+    showContent(result, true);
 }
 
 function recoverDeleteOrder(orderId, recycle) {
