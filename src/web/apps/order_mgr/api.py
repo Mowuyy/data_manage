@@ -42,7 +42,7 @@ class UploadOrder(APIView):
         #     f.save(os.path.join(file_dir, new_filename))
 
 
-class ListOrder(APIView):
+class ListOrderContent(APIView):
 
     _cn_regex = re.compile(r'[a-zA-Z\u4e00-\u9fa5]+')
     _isdigit_regex = re.compile(r'\d+')
@@ -83,16 +83,16 @@ class RemoveOrder(APIView):
     def post(self, request):
         dt = get_dt()
         try:
-            recycle = int(request.req_args.get("recycle"))
+            status = int(request.req_args.get("status"))
         except:
             raise APIException(code_msg.CODE_INVALID_ARGUEMNTS)
         order_id = request.req_args.get("order_id")
         update_sql = """UPDATE `tb_order_info` SET `is_delete`=?, `update_time`=? WHERE `order_id`=?"""
-        if recycle == 1:  # 恢复
+        if status == 1:  # 恢复
             self.db.execute(update_sql, (0, dt, order_id))
-        elif recycle == 2:  # 彻底删除
+        elif status == 2:  # 彻底删除
             self.db.execute("""DELETE FROM tb_order_info WHERE `order_id`=?""", (order_id, ))
-        elif recycle == 0:  # 逻辑删除
+        elif status == 0:  # 逻辑删除
             self.db.execute(update_sql, (1, dt, order_id))
         else:
             raise APIException(code_msg.CODE_INVALID_ARGUEMNTS)

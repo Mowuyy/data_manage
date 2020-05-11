@@ -2,7 +2,7 @@ CREATE TABLE `tb_order_info`(
    `id` INTEGER NOT NULL,
    `receiver` VARCHAR(128) NOT NULL,
    `order_status` TINYINT(3) NOT NULL, -- 订单状态：1 退货，2 退改，3 丢件 4 其他
-   `order_id` INT(50) NOT NULL ,
+   `order_id` VARCHAR(50) NOT NULL ,
    `apply_time` VARCHAR(50),
    `wangwang_id` VARCHAR(50),
    `goods_id` VARCHAR(50),

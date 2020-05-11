@@ -1,0 +1,43 @@
+#search_id {
+    margin-left: 120px;
+    margin-top: 50px;
+}
+
+#search_id input {
+    margin-right: 20px;
+    width:200px;
+    height: 25px;
+    border:0.5px solid #378888;
+}
+
+#search_id a {
+    margin-bottom: 5px;
+}
+
+.order_list_table th, .order_list_table td {
+    width: 10%;
+    text-align: center;
+    padding-top: 20px;
+}
+
+.order_list_table th {
+    font-size: 20px;
+    color: #3a3e50;
+}
+
+.order_list_table td {
+    font-size: 16px;
+    color: #999;
+}
+
+.page_flag {
+    margin-top: 50px;
+    text-align: center;
+}
+
+.body_right h1 {
+    text-align: center;
+    margin-top: 200px;
+    font-size: 20px;
+    color: #999;
+}

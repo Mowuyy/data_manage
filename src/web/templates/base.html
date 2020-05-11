@@ -32,8 +32,8 @@
                     <li>
                         <label>
                             <i class="iconfont iconYYGK"></i>
-                            <span onclick="showOrder()">查看订单</span>
-{#                            <a href="javascript:;" onclick="showOrder()"></a>#}
+                            <span>查看订单</span>
+                            <a href="/order_mgr/order_list"></a>
                         </label>
                     </li>
                 </ul>
@@ -88,7 +88,7 @@
                         <label>
                             <i class="iconfont iconYYGK"></i>
                             <span>订单</span>
-                            <a href="javascript:;" onclick="showRecycleOrder()"></a>
+                            <a href="/order_mgr/order_recycle"></a>
                         </label>
                     </li>
                     <li>
@@ -107,11 +107,10 @@
         {% endblock %}
     </div>
 </div>
-<script src="../static/js/jquery.min.js"></script>
-<script src="../static/js/jquery.sPage.js"></script>
-<script src="../static/js/utils.js"></script>
-<script src="../static/js/base.js"></script>
-<script src="../static/js/apps/order_mgr.js"></script>
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/jquery.sPage.js"></script>
+<script src="/static/js/utils.js"></script>
+<script src="/static/js/base.js"></script>
 {% block js_file %}
 {% endblock %}
 </body>

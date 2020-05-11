@@ -10,6 +10,11 @@ def order_mgr():
     return render_template("apps/order_upload.html")
 
 
+@app.route("/order_list")
+def order_list():
+    return render_template("apps/order_list.html")
+
+
 @app.route("/order_detail/<string:order_id>")
 def order_detail(order_id):
     db = current_app.db
@@ -29,3 +34,8 @@ def order_detail(order_id):
     }
     data.update({"order_status": order_status[data["order_status"]]})
     return render_template("apps/order_detail.html", data=data)
+
+
+@app.route("/order_recycle")
+def order_recycle():
+    return render_template("apps/order_recycle_list.html")
