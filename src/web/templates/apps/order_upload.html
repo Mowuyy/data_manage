@@ -6,12 +6,12 @@
 
 {% block content %}
 <form id="upload_order_form">
+    <p><label>寄件物流单号: </label><input type="text" name="mail_pd_id"></p>
     <p><label>收件人: </label><input type="text" name="receiver"></p>
     <p><label>订单编号: </label><input type="text" name="order_id"></p>
     <p><label>申请时间: </label><input type="text" name="apply_time"></p>
     <p><label>旺旺名称: </label><input type="text" name="wangwang_id"></p>
     <p><label>产品型号: </label><input type="text" name="goods_id"></p>
-    <p><label>寄件物流单号: </label><input type="text" name="mail_pd_id"></p>
     <p><label>退货物流公司: </label><input type="text" name="return_pd_company"></p>
     <p><label>退货物流单号: </label><input type="text" name="return_pd_id"></p>
     <p><label>备注: </label><input type="text" name="comment"></p>
@@ -23,6 +23,7 @@
             <option value="4">其他</option>
         </select>
     </p>
+    <p><a><input type="file" name="upload_order_img" id="upload_order_img"></a></p>
     <p>
         <button type="button" onclick="orderSubmit()">提交</button>
         <button type="reset">重置</button>

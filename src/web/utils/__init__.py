@@ -14,6 +14,12 @@ __all__ = [
 ]
 
 
+def make_dir(path):
+    if not os.path.exists(path):
+        os.makedirs(path)
+    return path
+
+
 def get_dt():
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 

@@ -1,8 +1,8 @@
 var order_list_url = "/order_mgr/list_order_content";
 
 // 删除、恢复、彻底删除
-function removeOrderCommon(orderId, status, callBack) {
-    var data = {"order_id": orderId, "status": status};
+function removeOrderCommon(mail_pd_id, status, callBack) {
+    var data = {"mail_pd_id": mail_pd_id, "status": status};
     postRequest("/order_mgr/remove_order", data, callBack);
 }
 
@@ -35,18 +35,18 @@ function orderContent(result, recycle, pageCallBack, nullContent) {
     content += '<a href="javascript:void(0);" data-type="reload" onclick="searchOrder()"><img src="/static/images/ser-icon01.png"></a>';
     content += '</div>';
     content += '<table class="order_list_table">';
-    content += '<tr><th>订单号</th><th>收件人</th><th>上传时间</th><th>操作</th></tr>';
+    content += '<tr><th>寄件物流单号</th><th>收件人</th><th>上传时间</th><th>操作</th></tr>';
     for (var i=0; i<data.length; i++) {
-        content += "<tr><td>" + data[i].order_id + "</td>";
+        var mail_pd_id= data[i].mail_pd_id;
+        content += "<tr><td>" + mail_pd_id + "</td>";
         content += "<td>" + data[i].receiver + "</td>";
         content += "<td>" + data[i].update_time + "</td>";
-        var orderId = data[i].order_id;
         if (recycle) {
-            content += "<td><a href='javascript:;' onclick='removeOrderRecover(\"" + orderId + "\")'>恢复</a> | ";
-            content += "<a href='javascript:;' onclick='removeOrderReal(\"" + orderId + "\")'>彻底删除</a></td>";
+            content += "<td><a href='javascript:;' onclick='removeOrderRecover(\"" + mail_pd_id + "\")'>恢复</a> | ";
+            content += "<a href='javascript:;' onclick='removeOrderReal(\"" + mail_pd_id + "\")'>彻底删除</a></td>";
         } else {
-            content += "<td><a href='/order_mgr/order_detail/" + orderId + "' target='_blank'>详情</a> | ";
-            content += "<a href='javascript:;' onclick='removeOrder(\"" + orderId + "\")'>删除</a></td></tr>";
+            content += "<td><a href='/order_mgr/order_detail/" + mail_pd_id + "' target='_blank'>详情</a> | ";
+            content += "<a href='javascript:;' onclick='removeOrder(\"" + mail_pd_id + "\")'>删除</a></td></tr>";
         }
     }
     content += '</table>';

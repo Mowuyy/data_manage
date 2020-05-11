@@ -18,8 +18,8 @@ function searchOrder() {
 }
 
 // 恢复
-function removeOrderRecover(orderId) {
-    removeOrderCommon(orderId, 1, removeOrderRecoverSuccess);
+function removeOrderRecover(mail_pd_id) {
+    removeOrderCommon(mail_pd_id, 1, removeOrderRecoverSuccess);
 }
 
 function removeOrderRecoverSuccess() {
@@ -28,8 +28,8 @@ function removeOrderRecoverSuccess() {
 }
 
 // 彻底删除
-function removeOrderReal(orderId) {
-    removeOrderCommon(orderId, 2, removeOrderRealSuccess);
+function removeOrderReal(mail_pd_id) {
+    removeOrderCommon(mail_pd_id, 2, removeOrderRealSuccess);
 }
 
 function removeOrderRealSuccess() {

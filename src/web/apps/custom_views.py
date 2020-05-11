@@ -8,20 +8,20 @@ from flask.globals import request
 import json, datetime, uuid, decimal
 from types import GeneratorType
 from . import code_msg
-# from flask_login import current_user
-from flask import current_app, abort
-#
-#
-# def check_login():
-#     if request.method == 'OPTIONS':
-#         return True
-#     elif current_app.login_manager._login_disabled:
-#         return True
-#     elif not current_user.is_authenticated:
-#         return False
-#         # return current_app.login_manager.unauthorized()
-#     return True
-#
+from flask_login import current_user
+from flask import current_app
+
+
+def check_login():
+    if request.method == 'OPTIONS':
+        return True
+    elif current_app.login_manager._login_disabled:
+        return True
+    elif not current_user.is_authenticated:
+        return False
+        # return current_app.login_manager.unauthorized()
+    return True
+
 class PageInfo(object):
 
     def __init__(self, page, page_sz, total=0):
@@ -39,40 +39,40 @@ class Schema(voluptuous.Schema):
 
 class CustomView(View):
 
-    _schema:voluptuous.Schema = True
+    _schema:voluptuous.Schema = None
     auto_process_page = True
     _filter_null = False
-#     _perms = None
-#     _load_perms = True
-#     _login_required = True
-#     _need_module = None
-#
-#     def _check_perm(self):
-#         if not self._perms:
-#             return True
-#         return current_user.can(self._perms, self._load_perms)
-#
-#     def _check_module_open(self):
-#         if not self._need_module:
-#             return True
-#         return current_user.is_module_open(self._need_module)
-#
-#     def _check_login(self):
-#         if self._login_required and not check_login():
-#             return False
-#         return True
-#
-#     def _check_can_access(self):
-#         if not self._check_login():
-#             current_app.logger.warn('url="%s", login required', request.url)
-#             return self._on_login_check_failed()
-#         if not self._check_perm():
-#             current_app.logger.warn('url="%s", permission denied', request.url)
-#             return self._on_403()
-#         if not self._check_module_open():
-#             current_app.logger.warn('url="%s", module not open', request.url)
-#             return self._on_module_not_open()
-#         return None
+    _perms = None
+    _load_perms = True
+    _login_required = True
+    _need_module = None
+
+    # def _check_perm(self):
+    #     if not self._perms:
+    #         return True
+    #     return current_user.can(self._perms, self._load_perms)
+    #
+    # def _check_module_open(self):
+    #     if not self._need_module:
+    #         return True
+    #     return current_user.is_module_open(self._need_module)
+
+    def _check_login(self):
+        if self._login_required and not check_login():
+            return False
+        return True
+
+    def _check_can_access(self):
+        if not self._check_login():
+            current_app.logger.warn('url="%s", login required', request.url)
+            return self._on_login_check_failed()
+        # if not self._check_perm():
+        #     current_app.logger.warn('url="%s", permission denied', request.url)
+        #     return self._on_403()
+        # if not self._check_module_open():
+        #     current_app.logger.warn('url="%s", module not open', request.url)
+        #     return self._on_module_not_open()
+        return None
 #
     def dispatch_request(self, *args, **kwargs):
         method = getattr(self, request.method.lower(), None)
@@ -81,6 +81,8 @@ class CustomView(View):
         if method is None:
             current_app.logger.warn('url="%s", method="%s"', request.url, method)
             return self._on_405()
+
+        # 验证权限
         # rtn = self._check_can_access()
         # if rtn:
         #     return rtn
@@ -88,16 +90,23 @@ class CustomView(View):
         all_req_args = None
         if self._schema:
             try:
-                all_req_args = request.args.to_dict()
+                # 获取参数
+                req_args = request.args.to_dict()
                 if request.json:
-                    all_req_args.update(request.json)
+                    req_args.update(request.json)
                 if request.values:
-                    all_req_args.update(request.values)
-                # print(all_req_args)
-                # req_args = self._schema(all_req_args)
-                req_args = all_req_args
+                    req_args.update(request.values)
+                if request.files:
+                    req_args.update(request.files)
+
+                print(req_args)
+                # 参数校验
+                req_args = self._schema(req_args)
+
                 if self._filter_null:
                     req_args = {k: v if v else None for k, v in req_args.items()}
+
+                # 分页处理
                 if self.auto_process_page and "page" in req_args:
                     page_sz = int(req_args.pop('page_size'))
                     if not 1 <= page_sz <= current_app.config['MAX_PAGE_SIZE']:
@@ -107,6 +116,8 @@ class CustomView(View):
                     request.page_info = PageInfo(page, page_sz)
                     auto_process_page = True
                 request.req_args = req_args
+
+                # 获取db连接
                 self.db = current_app.db
             except voluptuous.MultipleInvalid as e:
                 current_app.logger.warn('request invalid, url="%s", args="%s", exc="%s"', request.url, all_req_args, e)
