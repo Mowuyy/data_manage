@@ -32,8 +32,8 @@ class Config:
     MAX_PAGE_SIZE = 150
 
     # 上传图片
-    ALLOWED_EXTENSIONS = {'png', 'jpg', 'JPG', 'PNG', 'gif', 'GIF'}
-    UPLOAD_DIR = "upload/images"
+    ALLOWED_IMG_EXTENSIONS = {'png', 'jpg', 'JPG', 'PNG', 'gif', 'GIF'}
+    UPLOAD_IMG_PATH = os.path.join(BASE_PATH, "data/upload/images")
 
     @staticmethod
     def init_app(app:flask.Flask):

@@ -8,7 +8,7 @@
     margin-left: 60px;
 }
 
-.detail_css span {
+.detail_css span, .detail_css a {
     font-size: 15px;
     text-align: left;
     margin-left: 20px;

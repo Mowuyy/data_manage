@@ -11,6 +11,7 @@ CODE_NOT_LOGIN = 401  # 登录已失效，请重新登录
 CODE_MTH_NOT_ALLOWED = 405  # 不允许使用该HTTP方法
 CODE_DATA_EXIST = 10000  # 该寄件物流单号已存在
 CODE_DB_ROLLBACK = 10001  # 数据库操作失败
+CODE_UPLOAD_ORDER_ERROR = 10002  # 上传订单失败
 
 
 _CODE_MSG_MAP = dict()

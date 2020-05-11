@@ -10,7 +10,7 @@ CREATE TABLE `tb_order_info`(
    `return_pd_company` VARCHAR(250),
    `return_pd_id` VARCHAR(50),
    `comment` VARCHAR(500),
-   `img_path` VARCHAR(100),
+   `img_name` VARCHAR(100),
    `update_time` TIMESTAMP DEFAULT (DATETIME('now', 'localtime')),
    `is_delete` TINYINT(3) DEFAULT 0,  -- 逻辑删除：0 保留，1 删除
    `delete_time` TIMESTAMP DEFAULT '1970-01-01 13:00:01',

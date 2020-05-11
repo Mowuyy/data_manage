@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from flask import render_template, current_app, g
+import os
+
+from flask import render_template, current_app, g, make_response
 
 from . import app
 
@@ -33,9 +35,26 @@ def order_detail(mail_pd_id):
         4: "其他"
     }
     data.update({"order_status": order_status[data["order_status"]]})
+    print(data)
     return render_template("apps/order_detail.html", data=data)
 
 
 @app.route("/order_recycle")
 def order_recycle():
     return render_template("apps/order_recycle_list.html")
+
+
+@app.route("/img_detail/<string:mail_pd_id>")
+def img_detail(mail_pd_id):
+    if not (isinstance(mail_pd_id, str) or mail_pd_id):
+        return render_template("404.html")
+    db = current_app.db
+    id, img_name = db.get_one_row("""select `id`, `img_name` from tb_order_info WHERE`mail_pd_id`=?""", (mail_pd_id, ))
+    if img_name:
+        filename = str(id) + "." + img_name.rsplit('.', 1)[1]
+        img_path = os.path.join(current_app.config["UPLOAD_IMG_PATH"], filename)
+        if os.path.exists(img_path):
+            with open(img_path, "rb") as f:
+                response = make_response(f.read())
+                response.headers['Content-Type'] = 'image/png'
+                return response

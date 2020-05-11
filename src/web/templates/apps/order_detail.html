@@ -15,6 +15,11 @@
         <p><label>产品型号: </label><span>{{ data.goods_id }}</span></p>
         <p><label>退货物流公司: </label><span>{{ data.return_pd_company }}</span></p>
         <p><label>退货物流单号: </label><span>{{ data.return_pd_id }}</span></p>
+        {% if data.img_name != '空' %}
+            <p><label>图片: </label><a href="/order_mgr/img_detail/{{ data.mail_pd_id }}" target="_blank">{{ data.img_name}}</a></p>
+        {% else %}
+            <p><label>图片: </label><span>{{ data.img_name}}</span></p>
+        {% endif %}
         <p><label>备注: </label><span>{{ data.comment }}</span></p>
     </div>
 {% endblock %}
