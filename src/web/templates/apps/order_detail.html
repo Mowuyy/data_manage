@@ -5,21 +5,28 @@
 {% endblock %}
 
 {% block content %}
-    <div class="detail_css">
-        <p><label>寄件物流单号: </label><span>{{ data.mail_pd_id }}</span></p>
-        <p><label>订单编号: </label><span>{{ data.order_id  }}</span></p>
-        <p><label>收件人: </label><span>{{ data.receiver }}</span></p>
-        <p><label>旺旺名称: </label><span>{{ data.wangwang_id }}</span></p>
-        <p><label>订单状态: </label><span>{{ data.order_status }}</span></p>
-        <p><label>申请时间: </label><span>{{ data.apply_time }}</span></p>
-        <p><label>产品型号: </label><span>{{ data.goods_id }}</span></p>
-        <p><label>退货物流公司: </label><span>{{ data.return_pd_company }}</span></p>
-        <p><label>退货物流单号: </label><span>{{ data.return_pd_id }}</span></p>
+    <div class="order_detail">
+        <p><label>寄件物流单号: </label><span class="mail_pd_id" >{{ data.mail_pd_id }}</span></p>
+        <p><label>订单编号: </label><span class="order_id">{{ data.order_id  }}</span></p>
+        <p><label>收件人: </label><span class="receiver">{{ data.receiver }}</span></p>
+        <p><label>旺旺名称: </label><span class="wangwang_id">{{ data.wangwang_id }}</span></p>
+        <p><label>订单状态: </label><span class="order_status">{{ data.order_status }}</span></p>
+        <p><label>申请时间: </label><span class="apply_time">{{ data.apply_time }}</span></p>
+        <p><label>产品型号: </label><span class="goods_id">{{ data.goods_id }}</span></p>
+        <p><label>退货物流公司: </label><span class="return_pd_company">{{ data.return_pd_company }}</span></p>
+        <p><label>退货物流单号: </label><span class="return_pd_id">{{ data.return_pd_id }}</span></p>
+        <p><label>备注: </label><span class="comment">{{ data.comment }}</span></p>
         {% if data.img_name != '空' %}
-            <p><label>图片: </label><a href="/order_mgr/img_detail/{{ data.mail_pd_id }}" target="_blank">{{ data.img_name}}</a></p>
+            <p><label>图片: </label><a class="img_name" href="/order_mgr/img_detail/{{ data.mail_pd_id }}" target="_blank">{{ data.img_name}}</a></p>
         {% else %}
-            <p><label>图片: </label><span>{{ data.img_name}}</span></p>
+            <p><label>图片: </label><span class="img_name">{{ data.img_name}}</span></p>
         {% endif %}
-        <p><label>备注: </label><span>{{ data.comment }}</span></p>
     </div>
+    <p class="edit_detail">
+        <button type="button" onclick="edit_detail()">编辑</button>
+    </p>
+{% endblock %}
+
+{% block js_file %}
+<script src="/static/js/apps/edit_detail.js"></script>
 {% endblock %}

@@ -1,23 +1,40 @@
-.detail_css{
-    color: #999
+.order_detail {
+    color: #999;
 }
 
-.detail_css label {
+.order_detail >p >input {
+    /*text-align:left;*/
+    /*font-size:0.8em;*/
+    height:2.5em;
+    border:1px solid #c8cccf;
+    /*color: black;*/
+    outline:0;
+    width:30%;
+    margin-left: 10px;
+}
+
+.order_detail label {
     font-size: 18px;
     text-align: right;
     margin-left: 60px;
 }
 
-.detail_css span, .detail_css a {
+.order_detail span, .order_detail a {
     font-size: 15px;
     text-align: left;
     margin-left: 20px;
 }
 
-.detail_css label, .detail_css span {
+.order_detail label, .order_detail span {
     display: inline-block;
-    width: 150px;
+    width: 250px;
     margin-top: 20px;
 }
 
+.edit_detail {
+    color: black;
+    font-size: 18px;
+    margin-top: 50px;
+    margin-left: 250px;
+}
 

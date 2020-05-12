@@ -56,5 +56,5 @@ def img_detail(mail_pd_id):
         if os.path.exists(img_path):
             with open(img_path, "rb") as f:
                 response = make_response(f.read())
-                response.headers['Content-Type'] = 'image/png'
+                response.headers['Content-Type'] = 'image/*'
                 return response
