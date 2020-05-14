@@ -8,40 +8,33 @@ from ..custom_views import APIView, APIException
 from .. import code_msg
 from utils import get_dt, make_dir
 from flask import current_app, g
-from werkzeug.datastructures import FileStorage
-# from werkzeug.utils import secure_filename
-from voluptuous import Schema, Required, Coerce, Optional, Any
+from voluptuous import Schema, Required, Coerce, Optional
 from utils.args_schema_common import page_schema, only_num_id
+from .utils import order_schema
 
 
 class UploadOrder(APIView):
 
     _filter_null = True
-    _schema = Schema({
-        Required("mail_pd_id"): only_num_id,
-        Required("receiver"): Coerce(str),
-        Required("order_status"): Coerce(int),
-        Required("order_id"): str,
-        Optional("apply_time"): str,
-        Optional("wangwang_id"): str,
-        Optional("goods_id"): str,
-        Optional("return_pd_id"): str,
-        Optional("return_pd_company"): str,
-        Optional("comment"): str,
-        Optional("upload_order_img"): Any(FileStorage, str)
-    })
+    _schema = order_schema
 
     def post(self, request):
-        args_map = request.req_args
-        select_sql = """SELECT 1 FROM `tb_order_info` WHERE `mail_pd_id`=?"""
-        if self.db.get_value(select_sql, (args_map["mail_pd_id"], )):
+        args_map = {key: value if value != "空" else None for key, value in request.req_args.items()}
+        edit_action = args_map.get("action")
+        select_sql = """SELECT `id` FROM `tb_order_info` WHERE `mail_pd_id`=?"""
+        _id = self.db.get_value(select_sql, (args_map["mail_pd_id"], ))
+        if not edit_action and _id:
             raise APIException(code_msg.CODE_DATA_EXIST)
         insert_sql = """INSERT INTO `tb_order_info`(`mail_pd_id`, `receiver`, `order_status`, `order_id`, `apply_time`, `wangwang_id`,
          `goods_id`, `return_pd_company`, `return_pd_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"""
-        result = self.db.execute(insert_sql, (args_map["mail_pd_id"], args_map["receiver"], args_map["order_status"], args_map["order_id"],
-                         args_map["apply_time"], args_map["wangwang_id"], args_map["goods_id"],
-                         args_map["return_pd_company"], args_map["return_pd_id"]))
-        img_id = result.lastrowid
+        if edit_action:
+            img_id = _id
+        else:
+            result = self.db.execute(insert_sql, (args_map["mail_pd_id"], args_map["receiver"], args_map["order_status"], args_map["order_id"],
+                             args_map["apply_time"], args_map["wangwang_id"], args_map["goods_id"],
+                             args_map["return_pd_company"], args_map["return_pd_id"]))
+            img_id = result.lastrowid
+
         file_obj = args_map.get("upload_order_img")
         if file_obj:
             try:
@@ -52,6 +45,22 @@ class UploadOrder(APIView):
                 if os.path.exists(self.upload_img_path):
                     os.remove(self.upload_img_path)
                 raise APIException(code_msg.CODE_UPLOAD_ORDER_ERROR)
+        if edit_action:
+            update_sql = """UPDATE `tb_order_info` SET `receiver`=?, `order_status`=?, `order_id`=?, `apply_time`=?, """ \
+                         """`wangwang_id`=?, `goods_id`=?, `return_pd_company`=?, `return_pd_id`=?, `comment`=?, """ \
+                         """`update_time`=? WHERE `mail_pd_id`=? AND `is_delete`=0"""
+            self.db.execute(update_sql, (args_map["receiver"],
+                                         args_map["order_status"],
+                                         args_map["order_id"],
+                                         args_map["apply_time"],
+                                         args_map["wangwang_id"],
+                                         args_map["goods_id"],
+                                         args_map["return_pd_company"],
+                                         args_map["return_pd_id"],
+                                         args_map["comment"],
+                                         get_dt(),
+                                         args_map["mail_pd_id"],
+                                         ))
 
     def _upload_images(self, file_obj, img_id):
         filename = file_obj.filename
@@ -104,10 +113,6 @@ class ListOrderContent(APIView):
             cond = "`is_delete`=?"
             args = (is_delete, )
         return cond, args
-
-
-class UpdateOrder(APIView):
-    pass
 
 
 class RemoveOrder(APIView):

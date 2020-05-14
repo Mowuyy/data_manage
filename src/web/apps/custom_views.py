@@ -99,7 +99,6 @@ class CustomView(View):
                 if request.files:
                     req_args.update(request.files)
 
-                print(req_args)
                 # 参数校验
                 req_args = self._schema(req_args)
 
