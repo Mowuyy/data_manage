@@ -48,7 +48,6 @@ function updateDetail() {
     $.each(formDataArr, function (i, item) {
         formData.append(item.name, item.value);
     });
-
     var fileObj = $("#upload_order_img");
     if (fileObj.val()) {
         formData.append('upload_order_img', fileObj[0].files[0]);
@@ -58,25 +57,7 @@ function updateDetail() {
     mail_pd_id = $("#mail_pd_id").text();
     formData.append("mail_pd_id", mail_pd_id);
     formData.append("action", "edit");
-
-    $.ajax({
-        method: 'post',
-        url: "/order_mgr/upload_order",
-        data: formData,
-        contentType: false,
-        processData: false,
-        success: function (result) {
-            if (result.code != 0) {
-                alert(result.msg);
-                return;
-            } else {
-                updateDetailSuccess();
-            }
-        },
-        error: function () {
-            alert('系统错误，稍后再试');
-        }
-    })
+    formRequest("/order_mgr/upload_order", formData, updateDetailSuccess);
 }
 
 function updateDetailSuccess() {

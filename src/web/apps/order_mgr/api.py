@@ -8,15 +8,28 @@ from ..custom_views import APIView, APIException
 from .. import code_msg
 from utils import get_dt, make_dir
 from flask import current_app, g
-from voluptuous import Schema, Required, Coerce, Optional
 from utils.args_schema_common import page_schema, only_num_id
-from .utils import order_schema
+from voluptuous import Schema, Required, Coerce, Any, Optional
+from werkzeug.datastructures import FileStorage
 
 
 class UploadOrder(APIView):
 
     _filter_null = True
-    _schema = order_schema
+    _schema = Schema({
+        Required("mail_pd_id"): only_num_id,
+        Required("receiver"): Coerce(str),
+        Required("order_status"): Coerce(int),
+        Required("order_id"): str,
+        Optional("apply_time"): str,
+        Optional("wangwang_id"): str,
+        Optional("goods_id"): str,
+        Optional("return_pd_id"): str,
+        Optional("return_pd_company"): str,
+        Optional("comment"): str,
+        Optional("upload_order_img"): Any(FileStorage, str),
+        Optional("action"): str
+    })
 
     def post(self, request):
         args_map = {key: value if value != "空" else None for key, value in request.req_args.items()}
@@ -93,7 +106,6 @@ class ListOrderContent(APIView):
         if cnt:
             request.page_info.total = cnt
         result = [dict(zip(field_name, data)) for data in query_result]
-        print(result)
         return result
 
     def _get_sql_cond_args(self, request):

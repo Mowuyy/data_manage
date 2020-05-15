@@ -23,6 +23,6 @@ function removeOrder(orderId) {
 
 function removeOrderSuccess() {
     alert("订单删除成功！");
-    showOrderList();
+    window.location.href = "/order_mgr/order_list"
 }
 

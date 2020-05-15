@@ -57,10 +57,28 @@ function ajaxRequest(method, url, data, succCallback, errCallback=undefined) {
     $.ajax(options);
 }
 
-function getRequest(url, data, succCallback, loading=false, errCallback=undefined) {
+function formRequest(url, formData, succCallback, errCallback=undefined) {
+    $.ajax({
+        method: 'post',
+        url: url,
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function (result) {
+            requestSuccess(result, succCallback)
+        },
+        error: function (xhr, textStatus, errorThrown) {
+            requestError(xhr, textStatus, errorThrown, errCallback)
+        }
+    })
+
+}
+
+function getRequest(url, data, succCallback, errCallback=undefined) {
     return ajaxRequest('get', url, data, succCallback, errCallback);
 }
 
-function postRequest(url, data, succCallback, loading=false, errCallback=undefined) {
+function postRequest(url, data, succCallback, errCallback=undefined) {
     return ajaxRequest('post', url, data, succCallback, errCallback);
 }
+

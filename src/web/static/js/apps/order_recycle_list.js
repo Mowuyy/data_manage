@@ -24,7 +24,7 @@ function removeOrderRecover(mail_pd_id) {
 
 function removeOrderRecoverSuccess() {
     alert("恢复成功！");
-    showOrderRecycleList();
+    window.location.href = "/order_mgr/order_recycle"
 }
 
 // 彻底删除
@@ -34,5 +34,5 @@ function removeOrderReal(mail_pd_id) {
 
 function removeOrderRealSuccess() {
     alert("彻底删除成功！");
-    showOrderRecycleList();
+    window.location.href = "/order_mgr/order_recycle"
 }
