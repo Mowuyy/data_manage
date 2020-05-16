@@ -17,9 +17,9 @@
         <p><label>备注: </label><span class="comment">{{ data.comment }}</span></p>
         <p><label>订单状态: </label><span class="order_status">{{ data.order_status }}</span></p>
         {% if data.img_name != '空' %}
-            <p><label>图片: </label><a class="img_name" href="/order_mgr/img_detail/{{ data.mail_pd_id }}" target="_blank">{{ data.img_name}}</a></p>
+            <p><label>附件: </label><a class="img_name" href="/order_mgr/img_detail/{{ data.mail_pd_id }}" target="_blank">{{ data.img_name}}</a></p>
         {% else %}
-            <p><label>图片: </label><span class="img_name">{{ data.img_name}}</span></p>
+            <p><label>附件: </label><span class="img_name">{{ data.img_name}}</span></p>
         {% endif %}
     </div>
     <p class="edit_detail">

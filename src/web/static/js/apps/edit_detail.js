@@ -19,7 +19,7 @@ function editDetail() {
     var content = '<form class="order_detail">';
     for (var i=0; i<11; i++) {
         if (classArray[i] == "img_name") {
-            content += '<p><label>' + labelArray[i] + '</label><a><input type="file" name="upload_order_img" id="upload_order_img"></a><span>如果未选择，则是之前上传的图片</span></p>'
+            content += '<p><label>' + labelArray[i] + '</label><a><input type="file" name="upload_order_img" id="upload_order_img"></a><span>如果未选择，则是之前上传的附件</span></p>'
         } else if (classArray[i] == "order_status"){
             content += '<p><label>订单状态: </label><select class="order_status" name="order_status">';
             for (var j=1; j<5; j++) {

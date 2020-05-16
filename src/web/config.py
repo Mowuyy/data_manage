@@ -5,6 +5,7 @@ import sys
 import logging
 
 import flask
+from flask import g
 
 
 class Config:
@@ -53,15 +54,15 @@ class Config:
         @app.before_request
         def connect_db():
             from utils.db_utils import CustomDB
-            app.db = CustomDB(db_url)
+            db = getattr(g, "db", None)
+            if db is None:
+                g.db = CustomDB(db_url)
 
         @app.teardown_appcontext
-        def shutdown_session(response_or_exc):
-            from flask import current_app
-            db = current_app.db
+        def teardown_request(exception):
+            db = getattr(g, "db", None)
             if db is not None:
-                db.close()
-            return response_or_exc
+                g.db.close()
 
 
 class DevelopmentConfig(Config):

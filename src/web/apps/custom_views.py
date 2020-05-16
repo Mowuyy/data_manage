@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import sqlite3
 
 from werkzeug.wrappers.response import Response
 from flask.views import View
@@ -9,7 +8,7 @@ import json, datetime, uuid, decimal
 from types import GeneratorType
 from . import code_msg
 from flask_login import current_user
-from flask import current_app
+from flask import current_app, g
 
 
 def check_login():
@@ -117,7 +116,7 @@ class CustomView(View):
                 request.req_args = req_args
 
                 # 获取db连接
-                self.db = current_app.db
+                self.db = g.db
             except voluptuous.MultipleInvalid as e:
                 current_app.logger.warn('request invalid, url="%s", args="%s", exc="%s"', request.url, all_req_args, e)
                 return self._on_argument_invalid(e)

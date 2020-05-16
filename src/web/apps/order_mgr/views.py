@@ -2,7 +2,7 @@
 
 import os
 
-from flask import render_template, current_app, g, make_response
+from flask import render_template, g, make_response, current_app
 
 from . import app
 
@@ -19,7 +19,7 @@ def order_list():
 
 @app.route("/order_detail/<string:mail_pd_id>")
 def order_detail(mail_pd_id):
-    db = current_app.db
+    db = g.db
     query_result = list(db.get_one_row("""SELECT * FROM tb_order_info WHERE `mail_pd_id`=? AND `is_delete`=0""", (mail_pd_id, )))
     field_name = g.field_name
     del field_name[0]
@@ -48,13 +48,14 @@ def order_recycle():
 def img_detail(mail_pd_id):
     if not (isinstance(mail_pd_id, str) or mail_pd_id):
         return render_template("404.html")
-    db = current_app.db
-    id, img_name = db.get_one_row("""select `id`, `img_name` from tb_order_info WHERE`mail_pd_id`=?""", (mail_pd_id, ))
+    db = g.db
+    _id, img_name = db.get_one_row("""select `id`, `img_name` from tb_order_info WHERE`mail_pd_id`=?""", (mail_pd_id, ))
     if img_name:
-        filename = str(id) + "." + img_name.rsplit('.', 1)[1]
+        filename = str(_id) + "." + img_name.rsplit('.', 1)[1]
         img_path = os.path.join(current_app.config["UPLOAD_IMG_PATH"], filename)
         if os.path.exists(img_path):
             with open(img_path, "rb") as f:
                 response = make_response(f.read())
                 response.headers['Content-Type'] = 'image/*'
+                response.headers["Content-Disposition"] = f"p_w_upload; filename={filename};"
                 return response
