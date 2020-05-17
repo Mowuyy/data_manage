@@ -20,7 +20,7 @@ class UploadOrder(APIView):
         Required("mail_pd_id"): only_num_id,
         Required("receiver"): Coerce(str),
         Required("order_status"): Coerce(int),
-        Required("order_id"): str,
+        Optional("order_id"): str,
         Optional("apply_time"): str,
         Optional("wangwang_id"): str,
         Optional("goods_id"): str,
