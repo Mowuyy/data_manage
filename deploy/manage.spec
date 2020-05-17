@@ -1,0 +1,76 @@
+# -*- mode: python ; coding: utf-8 -*-
+
+block_cipher = None
+
+SETUP_DIR = ''
+PROJECT = ''
+
+a = Analysis(['manage.py',
+        'manage.py',
+        SETUP_DIR + 'config.py',
+        SETUP_DIR + 'apps\\__init__.py',
+        SETUP_DIR + 'apps\\code_msg.py',
+        SETUP_DIR + 'apps\\custom_views.py',
+        SETUP_DIR + 'apps\\error_pages.py',
+        SETUP_DIR + 'apps\\index\\__init__.py',
+        SETUP_DIR + 'apps\\index\\views.py',
+        SETUP_DIR + 'apps\\main\\__init__.py',
+        SETUP_DIR + 'apps\\main\\views.py',
+        SETUP_DIR + 'apps\\order_mgr\\views.py',
+        SETUP_DIR + 'apps\\order_mgr\\__init__.py',
+        SETUP_DIR + 'apps\\order_mgr\\api.py',
+        SETUP_DIR + 'apps\\order_mgr\\urls.py',
+        SETUP_DIR + 'apps\\utils\\__init__.py',
+        SETUP_DIR + 'apps\\utils\\db_utils.py',
+        SETUP_DIR + 'apps\\utils\\log_formatter.py',
+        SETUP_DIR + 'apps\\utils\\args_schema_common.py',
+],
+             pathex=[PROJECT],
+             binaries=[],
+             datas=[
+                (SETUP_DIR + 'db', 'db'),
+                (SETUP_DIR + 'log', 'log'),
+                (SETUP_DIR + 'static', 'static'),
+                (SETUP_DIR + 'images', 'images'),
+                (SETUP_DIR + 'js', 'js'),
+                (SETUP_DIR + 'css', 'css'),
+                (SETUP_DIR + 'static\\apps', 'static\\apps'),
+                (SETUP_DIR + 'css\\apps', 'css\\apps'),
+                (SETUP_DIR + 'templates', 'templates'),
+                (SETUP_DIR + 'templates\\apps', 'templates\\apps'),
+                (SETUP_DIR + 'data', 'data'),
+                (SETUP_DIR + 'data\\upload', 'data\\upload'),
+                (SETUP_DIR + 'data\\upload\\images', 'data\\upload\\images')
+             ],
+             hiddenimports=[],
+             hookspath=[],
+             runtime_hooks=[],
+             excludes=[],
+             win_no_prefer_redirects=False,
+             win_private_assemblies=False,
+             cipher=block_cipher,
+             noarchive=True)
+pyz = PYZ(a.pure, a.zipped_data,
+             cipher=block_cipher)
+exe = EXE(pyz,
+          a.scripts,
+          [('v', None, 'OPTION')],
+          exclude_binaries=True,
+          name='manage',
+          debug=True,
+          bootloader_ignore_signals=False,
+          strip=False,
+          upx=True,
+          console=False )
+coll = COLLECT(exe,
+               a.binaries,
+               a.zipfiles,
+               a.datas,
+               strip=False,
+               upx=True,
+               upx_exclude=[],
+               name='manage')
+app = BUNDLE(coll,
+             name='manage.app',
+             icon=None,
+             bundle_identifier=None)

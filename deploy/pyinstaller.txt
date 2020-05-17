@@ -12,4 +12,5 @@ cp -a log dist\manage
 cp -a db dist\manage
 cp -a static dist\manage
 cp -a templates dist\manage
+cp -a data dist\manage
 ls dist\manage\db dist\manage\log dist\manage\static dist\manage\templates
