@@ -2,8 +2,8 @@
 
 block_cipher = None
 
-SETUP_DIR = ''
-PROJECT = ''
+SETUP_DIR = 'C:\\Users\\Mr.m\\Desktop\\data_manage\\src\\web'
+PROJECT = SETUP_DIR
 
 a = Analysis(['manage.py',
         'manage.py',
@@ -31,11 +31,11 @@ a = Analysis(['manage.py',
                 (SETUP_DIR + 'db', 'db'),
                 (SETUP_DIR + 'log', 'log'),
                 (SETUP_DIR + 'static', 'static'),
-                (SETUP_DIR + 'images', 'images'),
-                (SETUP_DIR + 'js', 'js'),
-                (SETUP_DIR + 'css', 'css'),
-                (SETUP_DIR + 'static\\apps', 'static\\apps'),
-                (SETUP_DIR + 'css\\apps', 'css\\apps'),
+                (SETUP_DIR + 'static\\images', 'static\\images'),
+                (SETUP_DIR + 'static\\js', 'static\\js'),
+                (SETUP_DIR + 'static\\js\\apps', 'static\\js\\apps'),
+                (SETUP_DIR + 'static\\css', 'static\\css'),
+                (SETUP_DIR + 'static\\css\\apps', 'static\\css\\apps'),
                 (SETUP_DIR + 'templates', 'templates'),
                 (SETUP_DIR + 'templates\\apps', 'templates\\apps'),
                 (SETUP_DIR + 'data', 'data'),

@@ -35,7 +35,6 @@ def order_detail(mail_pd_id):
         4: "其他"
     }
     data.update({"order_status": order_status[data["order_status"]]})
-    print(data)
     return render_template("apps/order_detail.html", data=data)
 
 
